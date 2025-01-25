@@ -1,17 +1,141 @@
-import React from 'react'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-export const loginPage = () => {
-    return (
-        <div>
-            <h1>Login Page</h1>
-        </div>
-    )
-}
+export const LoginPage = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-export const registerPage = () => {
+    const handleLogin = (e) => {
+        e.preventDefault();
+        console.log("Login Info:", { email, password });
+    };
+
     return (
-        <div>
-            <h1>Register Page</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+                <h1 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
+                    Login
+                </h1>
+                <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-bold mb-1" htmlFor="email">
+                            Email:
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold mb-1" htmlFor="password">
+                            Password:
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+                    >
+                        Login
+                    </button>
+                </form>
+                <p className="text-sm text-center mt-4">
+                    Don’t have an account?{" "}
+                    <Link to="/auth/register" className="text-blue-500 hover:underline">
+                        Create one
+                    </Link>
+                </p>
+            </div>
         </div>
-    )
-}
+    );
+};
+
+export const RegisterPage = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+        console.log("Register Info:", { name, email, password });
+    };
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+                <h1 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
+                    Create an Account
+                </h1>
+                <form onSubmit={handleRegister} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-bold mb-1" htmlFor="name">
+                            Name:
+                        </label>
+                        <input
+                            id="name"
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="Enter your name"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold mb-1" htmlFor="email">
+                            Email:
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold mb-1" htmlFor="password">
+                            Password:
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+                    >
+                        Register
+                    </button>
+                </form>
+                <p className="text-sm text-center mt-4">
+                    Already have an account?{" "}
+                    <Link to="/auth/login" className="text-green-500 hover:underline">
+                        Login here
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+};
