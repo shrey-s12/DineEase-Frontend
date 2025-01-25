@@ -1,9 +1,45 @@
+import { Route, Routes } from "react-router-dom"
+import Navbar from "./components/Navbar"
+import HomePage from "./pages/HomePage"
+import CartPage from "./pages/CartPage"
+import CounterPage from "./pages/CounterPage"
+import DishesPage from "./pages/DishesPage"
+import ProfilePage from "./pages/ProfilePage"
+import { useEffect } from "react"
+import axios from "axios"
+import { useDispatch } from "react-redux"
+import { setUser } from "./slices/authSlice"
+import { setCart } from "./slices/cartSlice"
+
+const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios.get(`${MAIN_URL}/cart`)
+      .then(res => {
+        const user = res.data;
+        const cart = user.cart;
+        delete (user.cart);
+        dispatch(setUser(user));
+        dispatch(setCart(cart));
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }, [dispatch]);
 
   return (
-    <>
-      <h1 className="text-2xl font-bold">Shrey Singhal</h1>
-    </>
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/counters" element={<CounterPage />} />
+        <Route path="/dishes" element={<DishesPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Routes>
+    </div>
   )
 }
 
