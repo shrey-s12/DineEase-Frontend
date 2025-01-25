@@ -1,5 +1,8 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
 
 export const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -67,10 +70,22 @@ export const RegisterPage = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         console.log("Register Info:", { name, email, password });
+        try {
+            const response = await axios.post(`${AUTH_URL}/auth/register`, {
+                name,
+                email,
+                password,
+            });
+            navigate("/auth/login");
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
