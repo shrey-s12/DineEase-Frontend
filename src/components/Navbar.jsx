@@ -6,29 +6,55 @@ import { useSelector } from 'react-redux';
 const Navbar = () => {
     const cartCount = useSelector(state => state.cart.items.length);
     return (
-        <nav className='flex justify-between items-center text-white bg-gray-800'>
-            <Link to='/'>
-                <button className="p-2 my-1 text-white font-bold text-3xl ml-5 hover:outline hover:outline-white">DineEase</button>
+        <nav className="flex justify-between items-center bg-gray-900 px-6 py-3 shadow-md">
+            {/* Logo */}
+            <Link to="/" className="text-white font-extrabold text-3xl hover:text-yellow-400">
+                DineEase
             </Link>
-            <Link to='/counters' className="flex items-center p-1 my-1 mr-4 no-underline hover:outline hover:outline-white">
-                <button>Counters</button>
-            </Link>
-            <Link to='/dishes' className="flex items-center p-1 my-1 mr-4 no-underline hover:outline hover:outline-white">
-                <button>Dishes</button>
-            </Link>
-            <Link to='/profile' className="flex items-center p-1 my-1 mr-4 no-underline hover:outline hover:outline-white">
-                <button>Profile</button>
-            </Link>
-            <Link to='/cart' className="flex items-center p-1 my-1 mr-4 no-underline hover:outline hover:outline-white" >
-                <button className="relative">
-                    <LiaShoppingCartSolid className="text-4xl text-white" />
-                    <div className="absolute -top-1 -right-1 bg-yellow-500 text-xs text-white font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                        {cartCount}
-                    </div>
-                </button>
-                <span className="hidden font-bold md:inline text-white">Cart</span>
-            </Link>
+
+            {/* Links */}
+            <div className="flex space-x-6">
+                <Link
+                    to="/counters"
+                    className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                >
+                    Counters
+                </Link>
+                <Link
+                    to="/dishes"
+                    className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                >
+                    Dishes
+                </Link>
+                <Link
+                    to="/profile"
+                    className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                >
+                    Profile
+                </Link>
+                <Link
+                    to="/auth/login"
+                    className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                >
+                    Login
+                </Link>
+
+                {/* Cart */}
+                <Link
+                    to="/cart"
+                    className="relative flex items-center text-white font-medium hover:text-yellow-400 transition"
+                >
+                    <button className="relative">
+                        <LiaShoppingCartSolid className="text-3xl" />
+                        <div className="absolute -top-1 -right-2 bg-yellow-500 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                            {cartCount}
+                        </div>
+                    </button>
+                    <span className="hidden md:inline ml-2">Cart</span>
+                </Link>
+            </div>
         </nav>
+
     )
 }
 
