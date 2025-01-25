@@ -10,6 +10,7 @@ import axios from "axios"
 import { useDispatch } from "react-redux"
 import { setUser } from "./slices/authSlice"
 import { setCart } from "./slices/cartSlice"
+import { LoginPage, RegisterPage } from "./pages/AuthenticationPage"
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
@@ -38,6 +39,8 @@ function App() {
         <Route path="/counters" element={<CounterPage />} />
         <Route path="/dishes" element={<DishesPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
       </Routes>
     </div>
   )
