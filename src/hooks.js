@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 
+const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
+
 function axiosAuthConfig(method, token, url, body) {
     return {
         method: method,
@@ -25,7 +27,7 @@ export function useRetryCall(method) {
                 throw err;
             }
             const refresh_Token = localStorage.getItem('refresh_token');
-            const response = await axios.post('https://vistora-backend-auth.onrender.com/auth/token', { token: refresh_Token });
+            const response = await axios.post(`${AUTH_URL}/auth/token`, { token: refresh_Token });
             const { token: newToken } = response.data;
             localStorage.setItem('token', newToken);
             console.log("newToken", newToken);
