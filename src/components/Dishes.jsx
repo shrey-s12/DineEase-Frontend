@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
-const Dish = ({ dish }) => {
+const Dish = ({ dish, updateDish }) => {
     const disptach = useDispatch();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
 
@@ -50,7 +50,7 @@ const Dish = ({ dish }) => {
                 price,
                 inStock,
             });
-            console.log("Dish updated successfully:", response.data);
+            updateDish(response.data);
             setIsEditing(false);
         } catch (error) {
             console.error("Error editing dish:", error);
@@ -173,22 +173,29 @@ const Dish = ({ dish }) => {
 };
 
 const Dishes = () => {
-    const [Dishes, setDishes] = useState([]);
+    const [dishes, setDishes] = useState([]);
     useEffect(() => {
         const fetchDishes = async () => {
             try {
                 const response = await axios.get(`${MAIN_URL}/dish`);
                 setDishes(response.data);
-                console.log("response", response);
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDishes();
-    }, [])
+    }, []);
+
+    const updateDish = (updatedDish) => {
+        setDishes((prevDishes) =>
+            prevDishes.map((dish) =>
+                dish._id === updatedDish._id ? updatedDish : dish
+            )
+        );
+    };
     return (
         <div>
-            {Dishes.map(dish => <Dish key={dish._id} dish={dish} />)}
+            {dishes.map(dish => <Dish key={dish._id} dish={dish} updateDish={updateDish} />)}
         </div>
     )
 }
