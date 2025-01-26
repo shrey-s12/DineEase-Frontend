@@ -1,12 +1,12 @@
+import axios from "axios"
+import { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import HomePage from "./pages/HomePage"
 import CartPage from "./pages/CartPage"
-import CounterPage from "./pages/CounterPage"
+import CountersPage from "./pages/CountersPage"
 import DishesPage from "./pages/DishesPage"
 import ProfilePage from "./pages/ProfilePage"
-import { useEffect } from "react"
-import axios from "axios"
 import { useDispatch } from "react-redux"
 import { setUser } from "./slices/authSlice"
 import { setCart } from "./slices/cartSlice"
@@ -37,7 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/counters" element={<CounterPage />} />
+        <Route path="/counters" element={<CountersPage />} />
         <Route path="/dishes" element={<DishesPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/auth/login" element={<LoginPage />} />
