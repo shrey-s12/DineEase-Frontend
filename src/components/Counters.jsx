@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Counter = ({ counter }) => {
@@ -27,7 +28,12 @@ const Counters = () => {
 
   return (
     <div>
-      {counters.map(counter => <Counter key={counter._id} counter={counter} />)}
+      {counters.map(counter => (
+        <Link to={`/dish/counter/${counter._id}`} key={counter._id}>
+          <Counter counter={counter} />
+        </Link>
+      )
+      )}
     </div>
   )
 }
