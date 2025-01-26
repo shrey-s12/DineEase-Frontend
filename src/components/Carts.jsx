@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setCart } from '../slices/cartSlice';
+import { removeFromCart, setCart } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Cart = ({ cart }) => {
@@ -25,12 +25,7 @@ const Cart = ({ cart }) => {
     }
   };
   const removeCartItem = async (dishId) => {
-    try {
-      const response = await axios.delete(`${MAIN_URL}/cart/${dishId}`);
-      disptach(setCart(response.data));
-    } catch (error) {
-      console.error("Error removing item:", error);
-    }
+    disptach(removeFromCart(dishId));
   };
 
   return (
