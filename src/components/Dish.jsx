@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
@@ -157,32 +157,4 @@ const Dish = ({ dish, updateDish }) => {
     );
 };
 
-const Dishes = () => {
-    const [dishes, setDishes] = useState([]);
-    useEffect(() => {
-        const fetchDishes = async () => {
-            try {
-                const response = await axios.get(`${MAIN_URL}/dish`);
-                setDishes(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchDishes();
-    }, []);
-
-    const updateDish = (updatedDish) => {
-        setDishes((prevDishes) =>
-            prevDishes.map((dish) =>
-                dish._id === updatedDish._id ? updatedDish : dish
-            )
-        );
-    };
-    return (
-        <div>
-            {dishes.map(dish => <Dish key={dish._id} dish={dish} updateDish={updateDish} />)}
-        </div>
-    )
-}
-
-export default Dishes
+export default Dish
