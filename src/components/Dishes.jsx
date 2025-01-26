@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setCart } from '../slices/cartSlice';
+import { addToCart, setCart } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Dish = ({ dish, updateDish }) => {
@@ -32,12 +32,7 @@ const Dish = ({ dish, updateDish }) => {
         }
     };
     const addCartItem = async (dishId) => {
-        try {
-            const response = await axios.post(`${MAIN_URL}/cart/${dishId}`);
-            disptach(setCart(response.data));
-        } catch (error) {
-            console.error("Error adding dish to cart:", error);
-        }
+        disptach(addToCart(dishId));
     };
 
     const handleEditDish = async (e, id) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
-import { setCart } from '../slices/cartSlice';
+import { addToCart, setCart } from '../slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
@@ -26,12 +26,7 @@ const Dish = ({ dish }) => {
         }
     };
     const addCartItem = async (dishId) => {
-        try {
-            const response = await axios.post(`${MAIN_URL}/cart/${dishId}`);
-            disptach(setCart(response.data));
-        } catch (error) {
-            console.error("Error adding dish to cart:", error);
-        }
+        disptach(addToCart(dishId));
     };
 
     return (
@@ -82,7 +77,7 @@ const Dish = ({ dish }) => {
 const DishesByCounter = () => {
     const { counterId } = useParams();
     const [dishes, setDishes] = useState([]);
-    const [counterName, setCounterName] = useState("");
+    const [counter, setCounter] = useState("");
 
     useEffect(() => {
         const fetchDishesByCounter = async () => {
@@ -90,17 +85,22 @@ const DishesByCounter = () => {
                 const response = await axios.get(`${MAIN_URL}/dish/counter/${counterId}`);
                 console.log("Dishes by counter:", response);
                 setDishes(response.data);
-                setCounterName(response.data[0].counter.name);
+                setCounter(response.data[0].counter);
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDishesByCounter();
-    }, []);
+    }, [counterId]);
+
     return (
         <div>
             <h1>Dishes By Counter</h1>
-            <h1>Counter Name: {counterName} </h1>
+            <div className='flex items-center'>
+                <h1>Counter Name: {counter.name} </h1>
+                <h2 className='ml-5 font-bold'>Merchants:</h2>
+                {counter?.merchants?.map(merchant => <p className='ml-2' key={merchant._id}>{merchant.name}</p>)}
+            </div>
             {dishes.map(dish => <Dish key={dish._id} dish={dish} />)}
         </div>
     )
