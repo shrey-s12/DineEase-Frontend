@@ -27,6 +27,18 @@ export const cartSlice = createSlice({
         builder.addCase(removeFromCart.rejected, (state, action) => {
             console.log(action);
         });
+        builder.addCase(incrementQuantity.fulfilled, (state, action) => {
+            state.items = action.payload;
+        });
+        builder.addCase(incrementQuantity.rejected, (state, action) => {
+            console.log(action);
+        });
+        builder.addCase(decrementQuantity.fulfilled, (state, action) => {
+            state.items = action.payload;
+        });
+        builder.addCase(decrementQuantity.rejected, (state, action) => {
+            console.log(action);
+        });
     },
 });
 
@@ -44,4 +56,12 @@ export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (dis
     return response.data;
 });
 
-export const 
+export const incrementQuantity = createAsyncThunk('cart/incrementQuantity', async (dishId) => {
+    const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: 1 });
+    return response.data;
+});
+
+export const decrementQuantity = createAsyncThunk('cart/decrementQuantity', async (dishId) => {
+    const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: -1 });
+    return response.data;
+});
