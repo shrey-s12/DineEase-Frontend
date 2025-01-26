@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 const Navbar = () => {
     const cartCount = useSelector(state => state.cart.items.length);
     return (
-        <nav className="flex justify-between items-center bg-gray-900 px-6 py-3 shadow-md">
+        <nav className="flex justify-between items-center bg-gray-900 px-6 py-3 shadow-md sticky">
             {/* Logo */}
             <Link to="/" className="text-white font-extrabold text-3xl hover:text-yellow-400">
                 DineEase
