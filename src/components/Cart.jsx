@@ -56,13 +56,4 @@ const Cart = ({ cart }) => {
   );
 };
 
-const Carts = () => {
-  const carts = useSelector(state => state.cart.items);
-  return (
-    <div>
-      {carts.map(cart => <Cart key={cart.dish._id} cart={cart} />)}
-    </div>
-  )
-}
-
-export default Carts
+export default Cart
