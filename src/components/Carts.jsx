@@ -1,28 +1,16 @@
-import axios from 'axios';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart, setCart } from '../slices/cartSlice';
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { decrementQuantity, incrementQuantity, removeFromCart } from '../slices/cartSlice';
 
 const Cart = ({ cart }) => {
   const disptach = useDispatch();
   const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === cart.dish._id)?.quantity);
 
   const handleDecrement = async (dishId) => {
-    try {
-      const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: -1 });
-      disptach(setCart(response.data));
-    } catch (error) {
-      console.error("Error incrementing dish quantity:", error);
-    }
+    disptach(decrementQuantity(dishId));
   };
   const handleIncrement = async (dishId) => {
-    try {
-      const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: 1 });
-      disptach(setCart(response.data));
-    } catch (error) {
-      console.error("Error incrementing dish quantity:", error);
-    }
+    disptach(incrementQuantity(dishId));
   };
   const removeCartItem = async (dishId) => {
     disptach(removeFromCart(dishId));
