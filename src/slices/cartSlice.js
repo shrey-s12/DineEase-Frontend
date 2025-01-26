@@ -21,7 +21,13 @@ export const cartSlice = createSlice({
         builder.addCase(addToCart.rejected, (state, action) => {
             console.log(action);
         });
-    }
+        builder.addCase(removeFromCart.fulfilled, (state, action) => {
+            state.items = action.payload;
+        });
+        builder.addCase(removeFromCart.rejected, (state, action) => {
+            console.log(action);
+        });
+    },
 });
 
 export const { setCart } = cartSlice.actions;
@@ -33,3 +39,9 @@ export const addToCart = createAsyncThunk('cart/addToCart', async (dishId) => {
     return response.data;
 });
 
+export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (dishId) => {
+    const response = await axios.delete(`${MAIN_URL}/cart/${dishId}`);
+    return response.data;
+});
+
+export const 
