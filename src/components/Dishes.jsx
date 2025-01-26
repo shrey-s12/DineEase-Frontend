@@ -1,11 +1,29 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Dish = ({ dish }) => {
     const disptach = useDispatch();
+    const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
+
+    const handleDecrement = async (dishId) => {
+        try {
+            const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: -1 });
+            disptach(setCart(response.data));
+        } catch (error) {
+            console.error("Error incrementing dish quantity:", error);
+        }
+    };
+    const handleIncrement = async (dishId) => {
+        try {
+            const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: 1 });
+            disptach(setCart(response.data));
+        } catch (error) {
+            console.error("Error incrementing dish quantity:", error);
+        }
+    };
     const addCartItem = async (dishId) => {
         console.log("dishId", dishId);
         try {
@@ -27,12 +45,29 @@ const Dish = ({ dish }) => {
             </div>
             <div className='ml-auto'>
                 <p className="font-bold">${dish.price}</p>
-                <button
-                    onClick={() => addCartItem(dish._id)}
-                    className="bg-amber-400 p-2 hover:bg-amber-500"
-                >
-                    Add to Cart
-                </button>
+                {quantity
+                    ? (<div className="flex items-center">
+                        <button
+                            onClick={() => handleDecrement(dish._id)}
+                            className="bg-amber-400 p-2 hover:bg-amber-500"
+                        >
+                            -
+                        </button>
+                        <span className="p-2">{quantity}</span>
+                        <button
+                            onClick={() => handleIncrement(dish._id)}
+                            className="bg-amber-400 p-2 hover:bg-amber-500"
+                        >
+                            +
+                        </button>
+                    </div>)
+                    : (<button
+                        onClick={() => addCartItem(dish._id)}
+                        className="bg-amber-400 p-2 hover:bg-amber-500"
+                    >
+                        Add to Cart
+                    </button>)
+                }
             </div>
         </div>
     );
