@@ -17,41 +17,53 @@ const Cart = ({ cart }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center p-4 m-5 bg-gray-50 shadow-md rounded-lg w-full md:w-[60%]">
-      {/* Dish Details */}
-      <div className="flex-1 space-y-2">
-        <p className="font-bold text-lg text-gray-700">{cart.dish.name}</p>
-        <p className="text-sm text-gray-500">Category: {cart.dish.category}</p>
-        <p className="text-sm text-gray-500">Price: ₹{cart.dish.price}</p>
-        <p className={`text-sm ${cart.dish.inStock ? 'text-green-600' : 'text-red-600'}`}>
-          {cart.dish.inStock ? 'In Stock' : 'Out of Stock'}
-        </p>
+    <div className="flex flex-col border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-4 w-full max-w-md">
 
-        {/* Quantity Controls */}
+      <div className="flex justify-between items-center">
+        <img
+          src={cart.dish.image}
+          alt={cart.dish.name}
+          className="w-24 h-24 rounded-full object-cover"
+        />
+        <div className="ml-4">
+          <h2 className="text-lg font-bold">{cart.dish.name}</h2>
+          <p className="text-sm min-h-16 text-gray-600 dark:text-gray-400">{cart.dish.description}</p>
+          <p
+            className={`text-sm mt-2 ${cart.dish.inStock ? "text-green-500" : "text-red-500"}`}
+          >
+            {cart.dish.inStock ? "In Stock" : "Out of Stock"}
+          </p>
+        </div>
+      </div>
+
+      <div className='flex justify-between items-center'>
+        <span className="font-bold">Price: ₹{cart.dish.price}</span>
+        <span className="font-bold">Category: {cart.dish.category}</span>
+      </div>
+
+      <div className="mt-1 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <button
             onClick={() => handleDecrement(cart.dish._id)}
-            className="bg-amber-400 px-3 py-1 rounded-md hover:bg-amber-500 text-white font-medium"
+            className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
           >
             -
           </button>
-          <span className="px-4 py-1 border rounded-md text-gray-700">{quantity}</span>
+          <span>{quantity}</span>
           <button
             onClick={() => handleIncrement(cart.dish._id)}
-            className="bg-amber-400 px-3 py-1 rounded-md hover:bg-amber-500 text-white font-medium"
+            className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
           >
             +
           </button>
         </div>
+        <button
+          onClick={() => removeCartItem(cart.dish._id)}
+          className="bg-red-500 text-white rounded-lg px-4 py-2 hover:bg-red-600"
+        >
+          Remove
+        </button>
       </div>
-
-      {/* Remove Button */}
-      <button
-        onClick={() => removeCartItem(cart.dish._id)}
-        className="mt-4 md:mt-0 md:ml-4 bg-red-500 px-4 py-2 text-white font-bold rounded-lg hover:bg-red-600 transition"
-      >
-        Remove
-      </button>
     </div>
   );
 };
