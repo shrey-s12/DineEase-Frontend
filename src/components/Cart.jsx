@@ -45,14 +45,22 @@ const Cart = ({ cart }) => {
         <div className="flex items-center space-x-2">
           <button
             onClick={() => handleDecrement(cart.dish._id)}
-            className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
+            className={`rounded-lg px-4 py-2 ${cart.dish.inStock
+              ? "bg-amber-500 text-white hover:bg-amber-600"
+              : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
+            disabled={!cart.dish.inStock}
           >
             -
           </button>
           <span>{quantity}</span>
           <button
             onClick={() => handleIncrement(cart.dish._id)}
-            className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
+            className={`rounded-lg px-4 py-2 ${cart.dish.inStock
+              ? "bg-amber-500 text-white hover:bg-amber-600"
+              : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
+          disabled={!cart.dish.inStock}
           >
             +
           </button>

@@ -76,14 +76,22 @@ const Dish = ({ dish, updateDish }) => {
                             <div className="flex items-center space-x-2">
                                 <button
                                     onClick={() => handleDecrement(dish._id)}
-                                    className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
+                                    className={`rounded-lg px-4 py-2 ${dish.inStock
+                                        ? "bg-amber-500 text-white hover:bg-amber-600"
+                                        : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                        }`}
+                                    disabled={!dish.inStock}
                                 >
                                     -
                                 </button>
                                 <span>{quantity}</span>
                                 <button
                                     onClick={() => handleIncrement(dish._id)}
-                                    className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
+                                    className={`rounded-lg px-4 py-2 ${dish.inStock
+                                        ? "bg-amber-500 text-white hover:bg-amber-600"
+                                        : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                        }`}
+                                    disabled={!dish.inStock}
                                 >
                                     +
                                 </button>
@@ -91,7 +99,11 @@ const Dish = ({ dish, updateDish }) => {
                         ) : (
                             <button
                                 onClick={() => addCartItem(dish._id)}
-                                className="bg-amber-500 text-white rounded-lg px-4 py-2 hover:bg-amber-600"
+                                className={`rounded-lg px-4 py-2 ${dish.inStock
+                                    ? "bg-amber-500 text-white hover:bg-amber-600"
+                                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                    }`}
+                                disabled={!dish.inStock}
                             >
                                 Add to Cart
                             </button>
