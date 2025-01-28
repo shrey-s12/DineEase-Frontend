@@ -22,6 +22,11 @@ const CountersPage = () => {
         <div>
             <h1>Counters</h1>
             <div>
+                <Link to="/dish/counter/create">
+                    <button>Create Counter</button>
+                </Link>
+            </div>
+            <div>
                 {counters.map(counter => (
                     <Link to={`/dish/counter/${counter._id}`} key={counter._id}>
                         <Counter counter={counter} />
