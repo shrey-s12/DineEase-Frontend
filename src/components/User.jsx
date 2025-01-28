@@ -6,10 +6,10 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const User = ({ user, updateUser, deleteUser }) => {
     const [role, setRole] = useState(user.role);
 
-    const handleEditUser = async () => {
+    const handleEditUser = async (role) => {
         try {
             const response = await axios.put(`${MAIN_URL}/user/${user._id}`, {
-                role: role === "Merchant" ? "Customer" : "Merchant",
+                role
             });
             updateUser(response.data);
             setRole(response.data.role);
@@ -44,14 +44,17 @@ const User = ({ user, updateUser, deleteUser }) => {
                 </span>
             </div>
             {/* Role Toggle Button */}
-            {user.role !== "Admin" && (
-                <button
-                    onClick={handleEditUser}
-                    className="bg-blue-500 text-white px-4 py-2 mr-4 rounded-md hover:bg-blue-600"
+            
+                <select
+                    value={role}
+                    onChange={(e) => handleEditUser(e.target.value)}
+                    className="bg-gray-800 text-white px-4 py-2 mr-4 rounded-md"
                 >
-                    Toggle Role
-                </button>
-            )}
+                    <option value="Admin">Admin</option>
+                    <option value="Merchant">Merchant</option>
+                    <option value="Customer">Customer</option>
+                </select>
+            
             {user.role !== "Admin" && (
                 <button
                     onClick={handleDeleteUser}
