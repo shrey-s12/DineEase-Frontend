@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { decrementQuantity, incrementQuantity, removeFromCart } from '../slices/cartSlice';
 
 const Cart = ({ cart }) => {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === cart.dish._id)?.quantity);
 
   const handleDecrement = async (dishId) => {
-    disptach(decrementQuantity(dishId));
+    dispatch(decrementQuantity(dishId));
   };
   const handleIncrement = async (dishId) => {
-    disptach(incrementQuantity(dishId));
+    dispatch(incrementQuantity(dishId));
   };
   const removeCartItem = async (dishId) => {
-    disptach(removeFromCart(dishId));
+    dispatch(removeFromCart(dishId));
   };
 
   return (
