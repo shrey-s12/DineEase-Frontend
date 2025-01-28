@@ -47,19 +47,26 @@ const Dish = ({ dish, updateDish }) => {
             {!isEditing ? (
                 <>
                     <div>
+                        <img src={dish.image} alt="" />
+                    </div>
+                    <div>
                         <h2 className="text-lg font-bold">{dish.name}</h2>
                         <p>{dish.description}</p>
-                        <p>Category: {dish.category}</p>
-                        <p>Price: ${dish.price}</p>
                         <p
                             className={`text-sm ${dish.inStock ? "text-green-600" : "text-red-600"
                                 }`}
                         >
                             {dish.inStock ? "In Stock" : "Out of Stock"}
                         </p>
+                        <div>
+                            <span className="font-bold">Price: </span>
+                            <span>{dish.price}</span>
+                            <span className="font-bold">Category: </span>
+                            <span>{dish.category}</span>
+                        </div>
                     </div>
                     <div className="ml-auto">
-                        {quantity ? (
+                        <div>{quantity ? (
                             <div className="flex items-center">
                                 <button
                                     onClick={() => handleDecrement(dish._id)}
@@ -83,6 +90,7 @@ const Dish = ({ dish, updateDish }) => {
                                 Add to Cart
                             </button>
                         )}
+                        </div>
                         <div className="p-2 mt-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
                             <button onClick={() => setIsEditing(true)}>Edit Dish</button>
                         </div>
