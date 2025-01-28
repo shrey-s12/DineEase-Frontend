@@ -25,12 +25,15 @@ const DishesPage = () => {
     );
   };
   return (
-    <div>
-      <h1>Dishes</h1>
-      <div>
-        {dishes.map(dish => <Dish key={dish._id} dish={dish} updateDish={updateDish} />)}
+    <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+      <h1 className="text-2xl font-bold text-center mb-6">Dishes</h1>
+      <div className="grid gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {dishes.map(dish => (
+          <Dish key={dish._id} dish={dish} updateDish={updateDish} />
+        ))}
       </div>
     </div>
+
   )
 }
 

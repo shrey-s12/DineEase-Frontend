@@ -43,41 +43,42 @@ const Dish = ({ dish, updateDish }) => {
     };
 
     return (
-        <div className="flex border border-gray-200 p-4 m-4 w-[60%]">
+        <div className="flex flex-col border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-4 w-full max-w-md">
             {!isEditing ? (
                 <>
-                    <div>
-                        <img src={dish.image} alt="" />
-                    </div>
-                    <div>
-                        <h2 className="text-lg font-bold">{dish.name}</h2>
-                        <p>{dish.description}</p>
-                        <p
-                            className={`text-sm ${dish.inStock ? "text-green-600" : "text-red-600"
-                                }`}
-                        >
-                            {dish.inStock ? "In Stock" : "Out of Stock"}
-                        </p>
-                        <div>
-                            <span className="font-bold">Price: </span>
-                            <span>{dish.price}</span>
-                            <span className="font-bold">Category: </span>
-                            <span>{dish.category}</span>
+                    <div className="flex justify-between items-center">
+                        <img
+                            src={dish.image}
+                            alt={dish.name}
+                            className="w-24 h-24 rounded-full object-cover"
+                        />
+                        <div className="ml-4">
+                            <h2 className="text-lg font-bold">{dish.name}</h2>
+                            <p className="text-sm min-h-16 text-gray-600 dark:text-gray-400">{dish.description}</p>
+                            <p
+                                className={`text-sm mt-2 ${dish.inStock ? "text-green-500" : "text-red-500"}`}
+                            >
+                                {dish.inStock ? "In Stock" : "Out of Stock"}
+                            </p>
                         </div>
                     </div>
-                    <div className="ml-auto">
-                        <div>{quantity ? (
-                            <div className="flex items-center">
+                    <div>
+                        <p className="font-bold">Price: ${dish.price}</p>
+                        <p className="font-bold">Category: {dish.category}</p>
+                    </div>
+                    <div className="mt-4 flex justify-between items-center">
+                        {quantity ? (
+                            <div className="flex items-center space-x-2">
                                 <button
                                     onClick={() => handleDecrement(dish._id)}
-                                    className="bg-amber-400 p-2 hover:bg-amber-500"
+                                    className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
                                 >
                                     -
                                 </button>
-                                <span className="p-2">{quantity}</span>
+                                <span>{quantity}</span>
                                 <button
                                     onClick={() => handleIncrement(dish._id)}
-                                    className="bg-amber-400 p-2 hover:bg-amber-500"
+                                    className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600"
                                 >
                                     +
                                 </button>
@@ -85,21 +86,23 @@ const Dish = ({ dish, updateDish }) => {
                         ) : (
                             <button
                                 onClick={() => addCartItem(dish._id)}
-                                className="bg-amber-400 p-2 hover:bg-amber-500"
+                                className="bg-amber-500 text-white rounded-lg px-4 py-2 hover:bg-amber-600"
                             >
                                 Add to Cart
                             </button>
                         )}
-                        </div>
-                        <div className="p-2 mt-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
-                            <button onClick={() => setIsEditing(true)}>Edit Dish</button>
-                        </div>
+                        <button
+                            onClick={() => setIsEditing(true)}
+                            className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600"
+                        >
+                            Edit Dish
+                        </button>
                     </div>
                 </>
             ) : (
                 <form
                     onSubmit={(e) => handleEditDish(e, dish._id)}
-                    className="flex flex-col space-y-3 w-full"
+                    className="flex flex-col space-y-4"
                 >
                     <div>
                         <label className="block font-bold">Name:</label>
@@ -107,7 +110,7 @@ const Dish = ({ dish, updateDish }) => {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full p-2 border rounded-md"
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div>
@@ -115,7 +118,7 @@ const Dish = ({ dish, updateDish }) => {
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="w-full p-2 border rounded-md"
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div>
@@ -124,7 +127,7 @@ const Dish = ({ dish, updateDish }) => {
                             type="text"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="w-full p-2 border rounded-md"
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div>
@@ -133,7 +136,7 @@ const Dish = ({ dish, updateDish }) => {
                             type="number"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            className="w-full p-2 border rounded-md"
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="flex items-center space-x-3">
@@ -142,19 +145,20 @@ const Dish = ({ dish, updateDish }) => {
                             type="checkbox"
                             checked={inStock}
                             onChange={(e) => setInStock(e.target.checked)}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600"
                         />
                     </div>
-                    <div className="flex space-x-3">
+                    <div className="flex space-x-4">
                         <button
                             type="submit"
-                            className="bg-green-500 p-2 text-white rounded-md hover:bg-green-600"
+                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                         >
                             Save
                         </button>
                         <button
                             type="button"
                             onClick={() => setIsEditing(false)}
-                            className="bg-red-500 p-2 text-white rounded-md hover:bg-red-600"
+                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                         >
                             Cancel
                         </button>
@@ -162,6 +166,7 @@ const Dish = ({ dish, updateDish }) => {
                 </form>
             )}
         </div>
+
     );
 };
 
