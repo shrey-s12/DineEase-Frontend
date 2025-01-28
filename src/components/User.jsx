@@ -3,7 +3,7 @@ import axios from "axios";
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
-const User = ({ user, updateUser }) => {
+const User = ({ user, updateUser, deleteUser }) => {
     const [role, setRole] = useState(user.role);
 
     const handleEditUser = async () => {
@@ -15,6 +15,15 @@ const User = ({ user, updateUser }) => {
             setRole(response.data.role);
         } catch (error) {
             console.error("Error updating user role:", error);
+        }
+    };
+
+    const handleDeleteUser = async () => {
+        try {
+            await axios.delete(`${MAIN_URL}/user/${user._id}`);
+            deleteUser(user);
+        } catch (error) {
+            console.error("Error deleting user:", error);
         }
     };
 
@@ -41,6 +50,14 @@ const User = ({ user, updateUser }) => {
                     className="bg-blue-500 text-white px-4 py-2 mr-4 rounded-md hover:bg-blue-600"
                 >
                     Toggle Role
+                </button>
+            )}
+            {user.role !== "Admin" && (
+                <button
+                    onClick={handleDeleteUser}
+                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                >
+                    Delete User
                 </button>
             )}
         </div>

@@ -27,6 +27,14 @@ const AllUsersPage = () => {
         );
     };
 
+    const deleteUser = (deletedUser) => {
+        setUsers((prevUsers) =>
+            prevUsers.filter((user) =>
+                user._id !== deletedUser._id
+            )
+        );
+    };
+
     const admins = users.filter((user) => user.role === "Admin");
     const merchants = users.filter((user) => user.role === "Merchant");
     const customers = users.filter((user) => user.role === "Customer");
@@ -52,7 +60,7 @@ const AllUsersPage = () => {
                     </h2>
                     <div className="space-y-4">
                         {merchants.map((user) => (
-                            <User key={user._id} user={user} updateUser={updateUser} />
+                            <User key={user._id} user={user} updateUser={updateUser} deleteUser={deleteUser} />
                         ))}
                         {merchants.length === 0 && (
                             <p className="text-center text-gray-400">No merchants found.</p>
@@ -67,7 +75,7 @@ const AllUsersPage = () => {
                     </h2>
                     <div className="space-y-4">
                         {customers.map((user) => (
-                            <User key={user._id} user={user} updateUser={updateUser} />
+                            <User key={user._id} user={user} updateUser={updateUser} deleteUser={deleteUser} />
                         ))}
                         {customers.length === 0 && (
                             <p className="text-center text-gray-400">No customers found.</p>
