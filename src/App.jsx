@@ -13,6 +13,7 @@ import { setCart } from "./slices/cartSlice"
 import { LoginPage, RegisterPage } from "./pages/AuthenticationPage"
 import DishesByCounter from "./components/DishesByCounter"
 import AllUsersPage from "./pages/AllUsersPage"
+import CreateCounterPage from "./pages/CreateCounterPage"
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/dish/counter/:counterId" element={<DishesByCounter />} />
         <Route path="/allUsers" element={<AllUsersPage />} />
+        <Route path="/dish/counter/create" element={<CreateCounterPage />} />
       </Routes>
     </div>
   )
