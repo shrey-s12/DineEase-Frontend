@@ -15,6 +15,12 @@ const Navbar = () => {
             {/* Links */}
             <div className="flex space-x-6">
                 <Link
+                    to="/allUsers"
+                    className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                >
+                    All Users
+                </Link>
+                <Link
                     to="/counters"
                     className="text-white text-lg font-medium hover:text-yellow-400 transition"
                 >
