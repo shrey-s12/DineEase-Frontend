@@ -5,6 +5,7 @@ import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartS
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Dish = ({ dish, updateDish }) => {
+    console.log(dish)
     const disptach = useDispatch();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
 
@@ -62,11 +63,15 @@ const Dish = ({ dish, updateDish }) => {
                             </p>
                         </div>
                     </div>
-                    <div>
-                        <p className="font-bold">Price: ${dish.price}</p>
-                        <p className="font-bold">Category: {dish.category}</p>
+                    <div className='mb-1'>
+                        <span className='font-bold'>Counter: </span>
+                        <span>{dish.counter.name}</span>
                     </div>
-                    <div className="mt-4 flex justify-between items-center">
+                    <div className='flex justify-between items-center'>
+                        <span className="font-bold">Price: ₹{dish.price}</span>
+                        <span className="font-bold">Category: {dish.category}</span>
+                    </div>
+                    <div className="mt-1 flex justify-between items-center">
                         {quantity ? (
                             <div className="flex items-center space-x-2">
                                 <button
