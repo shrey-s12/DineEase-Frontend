@@ -25,12 +25,13 @@ const CountersPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 py-1">
+
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-200 flex-1 text-center">
                     Counters
                 </h1>
                 <Link to="/dish/counter/create">
-                    <button className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition">
+                    <button className="bg-blue-600 text-white mr-4 px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition">
                         Create Counter
                     </button>
                 </Link>
@@ -49,6 +50,7 @@ const CountersPage = () => {
                     </p>
                 )}
             </div>
+
         </div>
     );
 
