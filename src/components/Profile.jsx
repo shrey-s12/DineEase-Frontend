@@ -1,8 +1,6 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
-const Profile = () => {
-    const user = useSelector(state => state.auth.user);
+const Profile = ({ user }) => {
     return (
         <div>
             <p>Name: {user.name}</p>
