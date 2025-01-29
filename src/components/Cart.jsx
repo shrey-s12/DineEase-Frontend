@@ -60,7 +60,7 @@ const Cart = ({ cart }) => {
               ? "bg-amber-500 text-white hover:bg-amber-600"
               : "bg-gray-400 text-gray-700 cursor-not-allowed"
               }`}
-          disabled={!cart.dish.inStock}
+            disabled={!cart.dish.inStock}
           >
             +
           </button>
