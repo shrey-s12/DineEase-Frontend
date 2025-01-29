@@ -1,99 +1,99 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useParams } from 'react-router-dom';
-import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
+import { Link, useParams } from 'react-router-dom';
+import Dish from './Dish';
 import { useDispatch, useSelector } from 'react-redux';
+import { setCounter } from '../slices/counterSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
-
-const Dish = ({ dish }) => {
-    const disptach = useDispatch();
-    const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
-
-    const handleDecrement = async (dishId) => {
-        disptach(decrementQuantity(dishId));
-    };
-    const handleIncrement = async (dishId) => {
-        disptach(incrementQuantity(dishId));
-    };
-    const addCartItem = async (dishId) => {
-        disptach(addToCart(dishId));
-    };
-
-    return (
-        <div className="flex border border-gray-200 p-4 m-4 w-[60%]">
-            <div>
-                <h2 className="text-lg font-bold">{dish.name}</h2>
-                <p>{dish.description}</p>
-                <p>Category: {dish.category}</p>
-                <p>Price: ${dish.price}</p>
-                <p
-                    className={`text-sm ${dish.inStock ? "text-green-600" : "text-red-600"
-                        }`}
-                >
-                    {dish.inStock ? "In Stock" : "Out of Stock"}
-                </p>
-            </div>
-            <div className="ml-auto">
-                {quantity ? (
-                    <div className="flex items-center">
-                        <button
-                            onClick={() => handleDecrement(dish._id)}
-                            className="bg-amber-400 p-2 hover:bg-amber-500"
-                        >
-                            -
-                        </button>
-                        <span className="p-2">{quantity}</span>
-                        <button
-                            onClick={() => handleIncrement(dish._id)}
-                            className="bg-amber-400 p-2 hover:bg-amber-500"
-                        >
-                            +
-                        </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => addCartItem(dish._id)}
-                        className="bg-amber-400 p-2 hover:bg-amber-500"
-                    >
-                        Add to Cart
-                    </button>
-                )}
-            </div>
-        </div>
-    )
-
-}
 
 const DishesByCounter = () => {
     const { counterId } = useParams();
+
+    const dispatch = useDispatch();
+    const counter = useSelector(state => state.counter.counter);
     const [dishes, setDishes] = useState([]);
-    const [counter, setCounter] = useState("");
 
     useEffect(() => {
         const fetchDishesByCounter = async () => {
             try {
                 const response = await axios.get(`${MAIN_URL}/dish/counter/${counterId}`);
-                console.log("Dishes by counter:", response);
                 setDishes(response.data);
-                setCounter(response.data[0].counter);
+                try {
+                    const counterResponse = await axios.get(`${MAIN_URL}/counter/${counterId}`);
+                    console.log("counterResponse", counterResponse)
+                    dispatch(setCounter(counterResponse.data));
+                } catch (error) {
+                    console.error("Error fetching counter:", error);
+                    dispatch(setCounter(null));
+                }
             } catch (error) {
-                console.error(error);
+                console.error("Error fetching dishes:", error);
+                setDishes([]);
             }
         };
         fetchDishesByCounter();
     }, [counterId]);
 
+    const updateDish = (updatedDish) => {
+        setDishes((prevDishes) =>
+            prevDishes.map((dish) =>
+                dish._id === updatedDish._id ? updatedDish : dish
+            )
+        );
+    };
+
     return (
-        <div>
-            <h1>Dishes By Counter</h1>
-            <div className='flex items-center'>
-                <h1>Counter Name: {counter.name} </h1>
-                <h2 className='ml-5 font-bold'>Merchants:</h2>
-                {counter?.merchants?.map(merchant => <p className='ml-2' key={merchant._id}>{merchant.name}</p>)}
+        <div className="min-h-screen bg-gray-900 text-gray-100 py-8 px-4">
+            {counter ? (
+                <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="flex justify-between items-center mb-4">
+                        <h1 className="text-2xl font-bold text-gray-200">{counter.name}</h1>
+                        <Link to="/dish/create">
+                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
+                                Create Dish
+                            </button>
+                        </Link>
+                    </div>
+                    <div>
+                        {counter.merchants.length > 1 ? (
+                            <h2 className="text-lg font-semibold text-gray-300">Merchants:</h2>
+                        ) : (
+                            <h2 className="text-lg font-semibold text-gray-300">Merchant:</h2>
+                        )}
+                        {counter.merchants.length > 0 ? (
+                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-2">
+                                {counter.merchants.map((merchant) => (
+                                    <p
+                                        key={merchant._id}
+                                        className="bg-gray-700 px-3 py-1 rounded-md text-gray-300"
+                                    >
+                                        {merchant.name}
+                                    </p>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-gray-400 mt-2">No merchants assigned.</p>
+                        )}
+                    </div>
+                </div>
+            ) : (
+                <p className="text-gray-400 text-center text-lg">Loading counter details...</p>
+            )}
+
+            <div className="mt-6">
+                {dishes.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {dishes.map((dish) => (
+                            <Dish key={dish._id} dish={dish} updateDish={updateDish} />
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-400 text-lg">No dishes available for this counter.</p>
+                )}
             </div>
-            {dishes.map(dish => <Dish key={dish._id} dish={dish} />)}
         </div>
-    )
+    );
+
 }
 
 export default DishesByCounter
