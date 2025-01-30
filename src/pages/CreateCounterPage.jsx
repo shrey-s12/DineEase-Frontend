@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
@@ -9,6 +10,7 @@ const CreateCounterPage = () => {
     const [merchants, setMerchants] = useState([]);
     const [selectedMerchants, setSelectedMerchants] = useState([]);
 
+    const navigate = useNavigate();
     const token = localStorage.getItem("token");
     useEffect(() => {
         const fetchMerchants = async () => {
@@ -54,6 +56,7 @@ const CreateCounterPage = () => {
         } catch (error) {
             console.error("Error creating counter:", error);
         }
+        navigate("/counters");
     };
 
     return (
