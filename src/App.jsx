@@ -7,7 +7,7 @@ import CartPage from "./pages/CartPage"
 import CountersPage from "./pages/CountersPage"
 import DishesPage from "./pages/DishesPage"
 import ProfilePage from "./pages/ProfilePage"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { setUser } from "./slices/authSlice"
 import { setCart } from "./slices/cartSlice"
 import { LoginPage, RegisterPage } from "./pages/AuthenticationPage"
@@ -19,6 +19,7 @@ import CreateDishPage from "./pages/CreateDishPage"
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
 
   useEffect(() => {
     async function userInfo(token) {
@@ -35,7 +36,7 @@ function App() {
       }
     }
     userInfo(localStorage.getItem("token"))
-  }, [])
+  }, [user])
 
   return (
     <div>
