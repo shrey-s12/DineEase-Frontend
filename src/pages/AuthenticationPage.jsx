@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../slices/authSlice";
 
 const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
 
@@ -8,7 +10,7 @@ export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const handleLogin = (e) => {
         e.preventDefault();
         try {
@@ -17,6 +19,7 @@ export const LoginPage = () => {
                     const { token, refresh_token } = res.data;
                     localStorage.setItem('token', token);
                     localStorage.setItem('refresh_token', refresh_token);
+                    dispatch(setUser(res.data.user));
                     navigate("/profile");
                 })
                 .catch(err => {
