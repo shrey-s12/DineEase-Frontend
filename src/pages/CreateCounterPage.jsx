@@ -9,10 +9,15 @@ const CreateCounterPage = () => {
     const [merchants, setMerchants] = useState([]);
     const [selectedMerchants, setSelectedMerchants] = useState([]);
 
+    const token = localStorage.getItem("token");
     useEffect(() => {
         const fetchMerchants = async () => {
             try {
-                const response = await axios.get(`${MAIN_URL}/user/merchants`);
+                const response = await axios.get(`${MAIN_URL}/user/merchants`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setMerchants(response.data);
                 console.log(response);
             } catch (error) {
@@ -41,7 +46,11 @@ const CreateCounterPage = () => {
         };
 
         try {
-            await axios.post(`${MAIN_URL}/counter`, counterData);
+            await axios.post(`${MAIN_URL}/counter`, counterData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
         } catch (error) {
             console.error("Error creating counter:", error);
         }

@@ -4,8 +4,10 @@ import Dish from '../components/Dish';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const DishesPage = () => {
+
   const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("");
+  const token = localStorage.getItem('token');
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
@@ -15,7 +17,11 @@ const DishesPage = () => {
     const fetchDishes = async () => {
       try {
         const query = filter === "inStock" ? "?inStock=true" : "";
-        const response = await axios.get(`${MAIN_URL}/dish${query}`);
+        const response = await axios.get(`${MAIN_URL}/dish${query}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         setDishes(response.data);
       } catch (error) {
         console.error(error);
