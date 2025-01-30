@@ -7,6 +7,7 @@ const DishesPage = () => {
 
   const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("");
+  const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
 
   const handleFilterChange = (e) => {
@@ -15,6 +16,7 @@ const DishesPage = () => {
 
   useEffect(() => {
     const fetchDishes = async () => {
+      setLoading(true);
       try {
         const query = filter === "inStock" ? "?inStock=true" : "";
         const response = await axios.get(`${MAIN_URL}/dish${query}`, {
@@ -26,6 +28,7 @@ const DishesPage = () => {
       } catch (error) {
         console.error(error);
       }
+      setLoading(false);
     };
     fetchDishes();
   }, [filter]);
@@ -39,6 +42,7 @@ const DishesPage = () => {
   };
   return (
     <div className="dark:bg-gray-900 dark:text-gray-100 py-1 min-h-screen">
+
       <div className='container mx-auto py-4'>
         <h1 className="text-3xl font-bold text-center mb-6">Dishes</h1>
         <div className="flex justify-center mb-4">
@@ -52,14 +56,27 @@ const DishesPage = () => {
           </select>
         </div>
       </div>
-      <div className="grid gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {dishes.map(dish => (
-          <Dish key={dish._id} dish={dish} updateDish={updateDish} />
-        ))}
-      </div>
-    </div>
 
-  )
-}
+      {loading ? (
+        <div className="flex justify-center items-center h-40">
+          <span className="animate-spin rounded-full h-12 w-12 border-4 border-gray-400 border-t-white"></span>
+        </div>
+      ) : (
+        <div className="grid gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {dishes.length > 0 ? (
+            dishes.map((dish) => (
+              <Dish key={dish._id} dish={dish} updateDish={updateDish} />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-400">
+              No dishes available.
+            </p>
+          )}
+        </div>
+      )}
+
+    </div>
+  );
+};
 
 export default DishesPage
