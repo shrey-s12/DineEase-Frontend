@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Counter from '../components/Counter';
@@ -10,10 +10,12 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const CountersPage = () => {
     const dispatch = useDispatch();
     const counters = useSelector(state => state.counter.counters);
+    const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchCounters = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get(`${MAIN_URL}/counter`, {
                     headers: {
@@ -24,6 +26,7 @@ const CountersPage = () => {
             } catch (error) {
                 console.error(error);
             }
+            setLoading(false);
         };
         fetchCounters();
     }, []);
@@ -42,20 +45,25 @@ const CountersPage = () => {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 px-4 gap-6">
-                {counters.length > 0 ? (
-                    counters.map(counter => (
-                        <Link to={`/dish/counter/${counter._id}`} key={counter._id}>
-                            <Counter counter={counter} />
-                        </Link>
-                    ))
-                ) : (
-                    <p className="text-center text-gray-400 col-span-full">
-                        No counters available.
-                    </p>
-                )}
-            </div>
-
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <span className="animate-spin rounded-full h-12 w-12 border-4 border-gray-400 border-t-white"></span>
+                </div>
+            ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 px-4 gap-6">
+                    {counters.length > 0 ? (
+                        counters.map(counter => (
+                            <Link to={`/dish/counter/${counter._id}`} key={counter._id}>
+                                <Counter counter={counter} />
+                            </Link>
+                        ))
+                    ) : (
+                        <p className="text-center text-gray-400 col-span-full">
+                            No counters available.
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
     );
 
