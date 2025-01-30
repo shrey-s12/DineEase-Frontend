@@ -1,20 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setUser } from "../slices/authSlice";
 
 const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
 
 export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log("Login Info:", { email, password });
         try {
             axios.post(`${AUTH_URL}/auth/login`, { email, password })
                 .then(res => {

@@ -6,18 +6,23 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const AllUsersPage = () => {
     const [users, setUsers] = useState([]);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`${MAIN_URL}/user`);
+                const response = await axios.get(`${MAIN_URL}/user`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setUsers(response.data);
             } catch (error) {
                 console.error(error);
             }
         };
         fetchUsers();
-    }, []);
+    }, [token]);
 
     const updateUser = (updatedUser) => {
         setUsers((prevUsers) =>
