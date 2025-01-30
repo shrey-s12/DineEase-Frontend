@@ -14,6 +14,7 @@ const CreateDishPage = () => {
     const [inStock, setInStock] = useState(false);
 
     const counter = useSelector(state => state.counter.counter._id);
+    const token = localStorage.getItem('token');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +28,11 @@ const CreateDishPage = () => {
         };
 
         try {
-            await axios.post(`${MAIN_URL}/dish`, dishData);
+            await axios.post(`${MAIN_URL}/dish`, dishData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             navigate(-1);
         } catch (error) {
             console.error("Error creating dish:", error);

@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+const token = localStorage.getItem('token');
 
 const Dish = ({ dish, updateDish }) => {
-    console.log(dish)
     const disptach = useDispatch();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
 
@@ -26,6 +26,7 @@ const Dish = ({ dish, updateDish }) => {
         disptach(addToCart(dishId));
     };
 
+
     const handleEditDish = async (e, id) => {
         e.preventDefault();
         try {
@@ -35,6 +36,10 @@ const Dish = ({ dish, updateDish }) => {
                 category,
                 price,
                 inStock,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
             updateDish(response.data);
             setIsEditing(false);
