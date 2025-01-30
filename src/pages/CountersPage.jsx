@@ -10,11 +10,16 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const CountersPage = () => {
     const dispatch = useDispatch();
     const counters = useSelector(state => state.counter.counters);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchCounters = async () => {
             try {
-                const response = await axios.get(`${MAIN_URL}/counter`);
+                const response = await axios.get(`${MAIN_URL}/counter`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 dispatch(setCounters(response.data));
             } catch (error) {
                 console.error(error);

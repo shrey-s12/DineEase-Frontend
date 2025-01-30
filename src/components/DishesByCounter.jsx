@@ -12,15 +12,23 @@ const DishesByCounter = () => {
     const dispatch = useDispatch();
     const counter = useSelector(state => state.counter.counter);
     const [dishes, setDishes] = useState([]);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchDishesByCounter = async () => {
             try {
-                const response = await axios.get(`${MAIN_URL}/dish/counter/${counterId}`);
+                const response = await axios.get(`${MAIN_URL}/dish/counter/${counterId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setDishes(response.data);
                 try {
-                    const counterResponse = await axios.get(`${MAIN_URL}/counter/${counterId}`);
-                    console.log("counterResponse", counterResponse)
+                    const counterResponse = await axios.get(`${MAIN_URL}/counter/${counterId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
                     dispatch(setCounter(counterResponse.data));
                 } catch (error) {
                     console.error("Error fetching counter:", error);

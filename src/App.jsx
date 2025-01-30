@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import HomePage from "./pages/HomePage"
@@ -21,18 +21,21 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get(`${MAIN_URL}/cart`)
-      .then(res => {
+    async function userInfo(token) {
+      try {
+        const res = await axios.get(`${MAIN_URL}/cart`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
         const user = res.data;
         const cart = user.cart;
-        delete (user.cart);
         dispatch(setUser(user));
         dispatch(setCart(cart));
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }, [dispatch]);
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+    userInfo(localStorage.getItem("token"))
+  }, [])
 
   return (
     <div>
