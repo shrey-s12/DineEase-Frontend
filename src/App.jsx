@@ -27,9 +27,7 @@ function App() {
         const res = await axios.get(`${MAIN_URL}/cart`, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        const user = res.data;
-        const cart = user.cart;
-        dispatch(setUser(user));
+        const cart = res.data.cart;
         dispatch(setCart(cart));
       } catch (err) {
         console.error(err.message);
@@ -37,6 +35,21 @@ function App() {
     }
     userInfo(localStorage.getItem("token"))
   }, [user])
+
+  useEffect(() => {
+    async function userInfo(token) {
+      try {
+        const res = await axios.get(`${MAIN_URL}/cart`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        const user = res.data;
+        dispatch(setUser(user));
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+    userInfo(localStorage.getItem("token"))
+  }, [])
 
   return (
     <div>
