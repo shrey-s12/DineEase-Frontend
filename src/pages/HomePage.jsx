@@ -81,8 +81,8 @@ const HomePage = () => {
           }
         });
         setCounters(counterRes.data.slice(0, 4)); // Show top 4 counters
-        
-        const dishRes = await axios.get(`${MAIN_URL}/dish`,{
+
+        const dishRes = await axios.get(`${MAIN_URL}/dish`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -143,9 +143,9 @@ const HomePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
           {dishes.length > 0 ? (
             dishes.map(dish => (
-              <Link to={`/dish/${dish._id}`} key={dish._id} className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition text-center">
+              <div key={dish._id} className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition text-center">
                 {dish.name}
-              </Link>
+              </div>
             ))
           ) : (
             <p className="text-center col-span-full text-gray-400">No dishes available.</p>
