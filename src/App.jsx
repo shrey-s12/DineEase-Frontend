@@ -15,6 +15,7 @@ import DishesByCounter from "./components/DishesByCounter"
 import AllUsersPage from "./pages/AllUsersPage"
 import CreateCounterPage from "./pages/CreateCounterPage"
 import CreateDishPage from "./pages/CreateDishPage"
+import Footer from "./components/Footer"
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
@@ -67,6 +68,7 @@ function App() {
         <Route path="/dish/counter/create" element={<CreateCounterPage />} />
         <Route path="/dish/create" element={<CreateDishPage />} />
       </Routes>
+      <Footer />
     </div>
   )
 }
