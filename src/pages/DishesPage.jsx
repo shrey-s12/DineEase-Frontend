@@ -11,7 +11,7 @@ const DishesPage = () => {
   const token = localStorage.getItem('token');
 
   const handleFilterChange = (e) => {
-    setFilter(e.target.value);
+    setFilter(e.target.checked ? "inStock" : "");
   };
 
   useEffect(() => {
@@ -45,17 +45,23 @@ const DishesPage = () => {
 
       <div className='container mx-auto py-4'>
         <h1 className="text-3xl font-bold text-center mb-6">Dishes</h1>
-        <div className="flex justify-center mb-4">
-          <select
-            className="bg-gray-800 text-white px-4 py-2 rounded-md"
-            value={filter}
-            onChange={handleFilterChange}
-          >
-            <option value="">All Dishes</option>
-            <option value="inStock">In Stock</option>
-          </select>
+
+        {/* Toggle Switch for Filter */}
+        <div className="flex justify-center items-center mb-4">
+          <span className="text-white mr-3">All Dishes</span>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={filter === "inStock"}
+              onChange={(e) => handleFilterChange(e)}
+            />
+            <div className="w-11 h-6 bg-gray-800 peer-focus:ring-2 peer-focus:ring-gray-500 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+          </label>
+          <span className="text-white ml-3">In Stock</span>
         </div>
       </div>
+
 
       {loading ? (
         <div className="flex justify-center items-center h-40">
