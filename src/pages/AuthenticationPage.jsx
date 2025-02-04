@@ -1,10 +1,20 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../slices/authSlice";
 
 const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
+
+export const Auth = () => {
+    const user = useSelector(state => state.auth.user);
+    const location = useLocation();
+    return (
+        user
+            ? <Outlet />
+            : <Navigate to="/auth/login" state={{ from: location.pathname }} replace />
+    );
+}
 
 export const LoginPage = () => {
     const [email, setEmail] = useState("");
