@@ -5,6 +5,12 @@ import { useSelector } from 'react-redux';
 
 const Navbar = () => {
     const cartCount = useSelector(state => state.cart.items.length);
+    const user = useSelector(state => state.auth.user);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+    }
     return (
         <nav className="flex justify-between items-center bg-gray-900 px-6 py-3 shadow-md sticky top-0 z-50">
             {/* Logo */}
@@ -38,13 +44,21 @@ const Navbar = () => {
                 >
                     Profile
                 </Link>
-                <Link
-                    to="/auth/login"
-                    className="text-white text-lg font-medium hover:text-yellow-400 transition"
-                >
-                    Login
-                </Link>
-
+                {user
+                    ? <Link
+                        onClick={handleLogout}
+                        to="/auth/login"
+                        className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                    >
+                        Logout
+                    </Link>
+                    : <Link
+                        to="/auth/login"
+                        className="text-white text-lg font-medium hover:text-yellow-400 transition"
+                    >
+                        Login
+                    </Link>
+                }
                 {/* Cart */}
                 <Link
                     to="/cart"
