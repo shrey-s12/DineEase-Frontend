@@ -66,8 +66,6 @@ function App() {
     )
   }
 
-  console.log("user in App:", user);
-
   return (
     <div>
       <Routes>

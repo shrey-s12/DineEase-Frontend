@@ -9,7 +9,6 @@ const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
 export const Auth = () => {
     const user = useSelector(state => state.auth.user);
     const location = useLocation();
-    console.log("user in Auth:", user);
 
     return (
         user
@@ -103,7 +102,6 @@ export const RegisterPage = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        console.log("Register Info:", { name, email, password });
         try {
             const response = await axios.post(`${AUTH_URL}/auth/register`, {
                 name,
