@@ -8,9 +8,9 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const DishesByCounter = () => {
     const { counterId } = useParams();
-
     const dispatch = useDispatch();
     const counter = useSelector(state => state.counter.counter);
+    const user = useSelector(state => state.auth.user);
     const [dishes, setDishes] = useState([]);
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
@@ -65,11 +65,13 @@ const DishesByCounter = () => {
                     <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
                         <div className="flex justify-between items-center mb-4">
                             <h1 className="text-2xl font-bold text-gray-200">{counter.name}</h1>
-                            <Link to="/dish/create">
-                                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
-                                    Create Dish
-                                </button>
-                            </Link>
+                            {user.role === "Merchant" && (
+                                <Link to="/dish/create">
+                                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
+                                        Create Dish
+                                    </button>
+                                </Link>
+                            )}
                         </div>
                         <div>
                             {counter.merchants.length > 1 ? (
