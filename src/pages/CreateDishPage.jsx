@@ -44,7 +44,7 @@ const CreateDishPage = () => {
             <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-full max-w-lg">
                 <div className='flex justify-between'>
                     <h1 className="text-2xl font-bold mb-4">Create Dish</h1>
-                    <h1 className="text-2xl font-bold mb-4">{counter.name}</h1>
+                    <h1 className="text-2xl font-bold mb-4">{counter?.name}</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
