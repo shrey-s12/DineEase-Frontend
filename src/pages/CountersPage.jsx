@@ -10,6 +10,7 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const CountersPage = () => {
     const dispatch = useDispatch();
     const counters = useSelector(state => state.counter.counters);
+    const user = useSelector(state => state.auth.user);
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
 
@@ -38,11 +39,11 @@ const CountersPage = () => {
                 <h1 className="text-3xl font-bold text-gray-200 flex-1 text-center">
                     Counters
                 </h1>
-                <Link to="/dish/counter/create">
+                {user.role === "Admin" && (<Link to="/dish/counter/create">
                     <button className="bg-blue-600 text-white mr-4 px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition">
                         Create Counter
                     </button>
-                </Link>
+                </Link>)}
             </div>
 
             {loading ? (
