@@ -11,9 +11,9 @@ const CreateDishPage = () => {
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState(0);
-    const [inStock, setInStock] = useState(false);
+    const [inStock, setInStock] = useState(true);
 
-    const counter = useSelector(state => state.counter.counter._id);
+    const counter = useSelector(state => state.counter.counter);
     const token = localStorage.getItem('token');
 
     const handleSubmit = async (e) => {
@@ -24,7 +24,7 @@ const CreateDishPage = () => {
             category,
             price,
             inStock,
-            counter,
+            counter: counter._id
         };
 
         try {
@@ -44,7 +44,7 @@ const CreateDishPage = () => {
             <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-full max-w-lg">
                 <div className='flex justify-between'>
                     <h1 className="text-2xl font-bold mb-4">Create Dish</h1>
-                    <h1 className="text-2xl font-bold mb-4">Counter name</h1>
+                    <h1 className="text-2xl font-bold mb-4">{counter.name}</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -100,7 +100,7 @@ const CreateDishPage = () => {
                         <label className="font-bold mb-1">In Stock:</label>
                         <input
                             type="checkbox"
-                            value={inStock}
+                            checked={inStock}
                             onChange={(e) => setInStock(e.target.checked)}
                             className="ml-2"
                         />
