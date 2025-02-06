@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Dish from '../components/Dish';
+import { useSelector } from 'react-redux';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const DishesPage = () => {
 
+  const user = useSelector(state => state.auth?.user);
+  console.log("user in DishesPage", user);
   const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,16 +22,23 @@ const DishesPage = () => {
       setLoading(true);
       try {
         const query = filter === "inStock" ? "?inStock=true" : "";
-        const response = await axios.get(`${MAIN_URL}/dish${query}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        let response;
+        if (user.role === "Merchant") {
+          response = await axios.get(`${MAIN_URL}/dish/merchant/${user._id}${query}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } else {
+          response = await axios.get(`${MAIN_URL}/dish${query}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        }
+
         setDishes(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchDishes();
   }, [filter]);
