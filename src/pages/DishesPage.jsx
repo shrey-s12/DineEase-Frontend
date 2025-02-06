@@ -7,7 +7,6 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const DishesPage = () => {
 
   const user = useSelector(state => state.auth?.user);
-  console.log("user in DishesPage", user);
   const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
