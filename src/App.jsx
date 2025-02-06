@@ -16,6 +16,7 @@ import AllUsersPage from "./pages/AllUsersPage"
 import CreateCounterPage from "./pages/CreateCounterPage"
 import CreateDishPage from "./pages/CreateDishPage"
 import Footer from "./components/Footer"
+import MerchantCounters from "./pages/MerchantCounters.jsx"
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
@@ -80,6 +81,7 @@ function App() {
             <Route path="/allUsers" element={<AllUsersPage />} />
             <Route path="/dish/counter/create" element={<CreateCounterPage />} />
             <Route path="/dish/create" element={<CreateDishPage />} />
+            <Route path="/merchantCounters" element={<MerchantCounters />} />
           </Route>
         </Route>
         <Route path="/auth/login" element={<LoginPage />} />

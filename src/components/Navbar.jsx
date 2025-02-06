@@ -40,12 +40,17 @@ const Navbar = () => {
                         </Link>
 
                         <div className="flex space-x-6">
-                            {user.role === "Admin" && (<Link to="/allUsers" className="text-white text-lg font-medium hover:text-yellow-400 transition" >
-                                All Users
-                            </Link>
+                            {user.role === "Admin" && (
+                                <Link to="/allUsers" className="text-white text-lg font-medium hover:text-yellow-400 transition" >
+                                    All Users
+                                </Link>
                             )}
 
-
+                            {user.role === "Merchant" && (
+                                <Link to="/merchantCounters" className="text-white text-lg font-medium hover:text-yellow-400 transition" >
+                                    My Counters
+                                </Link>
+                            )}
 
                             <Link to="/counters" className="text-white text-lg font-medium hover:text-yellow-400 transition">
                                 Counters
