@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
-const token = localStorage.getItem('token');
 
 const Dish = ({ dish, updateDish }) => {
     const user = useSelector(state => state.auth.user);
     const disptach = useDispatch();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
+    const token = localStorage.getItem('token');
 
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState(dish.name);
@@ -24,6 +24,7 @@ const Dish = ({ dish, updateDish }) => {
         disptach(incrementQuantity(dishId));
     };
     const addCartItem = async (dishId) => {
+        console.log("dishId", dishId);
         disptach(addToCart(dishId));
     };
 

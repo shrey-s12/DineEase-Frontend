@@ -2,8 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
-const token = localStorage.getItem('token');
-
 const initialState = {
     items: [],
 }
@@ -48,7 +46,9 @@ export const { setCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
+
 export const addToCart = createAsyncThunk('cart/addToCart', async (dishId) => {
+    const token = localStorage.getItem('token');
     const response = await axios.post(`${MAIN_URL}/cart/${dishId}`, {}, {
         headers: {
             Authorization: `Bearer ${token}`
@@ -58,6 +58,7 @@ export const addToCart = createAsyncThunk('cart/addToCart', async (dishId) => {
 });
 
 export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (dishId) => {
+    const token = localStorage.getItem('token');
     const response = await axios.delete(`${MAIN_URL}/cart/${dishId}`, {
         headers: {
             Authorization: `Bearer ${token}`
@@ -67,6 +68,7 @@ export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (dis
 });
 
 export const incrementQuantity = createAsyncThunk('cart/incrementQuantity', async (dishId) => {
+    const token = localStorage.getItem('token');
     const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: 1 }, {
         headers: {
             Authorization: `Bearer ${token}`
@@ -76,6 +78,7 @@ export const incrementQuantity = createAsyncThunk('cart/incrementQuantity', asyn
 });
 
 export const decrementQuantity = createAsyncThunk('cart/decrementQuantity', async (dishId) => {
+    const token = localStorage.getItem('token');
     const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: -1 }, {
         headers: {
             Authorization: `Bearer ${token}`
