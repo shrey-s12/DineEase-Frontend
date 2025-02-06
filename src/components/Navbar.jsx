@@ -1,15 +1,17 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navbar = () => {
     const cartCount = useSelector(state => state.cart.items.length);
     const user = useSelector(state => state.auth.user);
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('refresh_token');
+        dispatch(setUser(null));
     }
     return (
         <>
