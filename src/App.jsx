@@ -22,44 +22,41 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const loading = useSelector(state => state.auth.loading);
-  const token = localStorage.getItem("token");
-
-  const fetchUser = async (token) => {
-    dispatch(setLoading(true));
-    try {
-      const res = await axios.get(`${MAIN_URL}/cart`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      const user = res.data;
-      dispatch(setUser(user));
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  }
-
-  const fetchCart = async (token) => {
-    try {
-      const res = await axios.get(`${MAIN_URL}/cart`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      const cart = res.data.cart;
-      dispatch(setCart(cart));
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (!user) {
-      fetchUser(token);
+    async function fetchUser() {
+      dispatch(setLoading(true));
+      try {
+        const res = await axios.get(`${MAIN_URL}/cart`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        const user = res.data;
+        dispatch(setUser(user));
+      } catch (err) {
+        console.error(err.message);
+      } finally {
+        dispatch(setLoading(false));
+      }
     }
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    async function fetchUserCart() {
+      try {
+        const res = await axios.get(`${MAIN_URL}/cart`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        const cart = res.data.cart;
+        dispatch(setCart(cart));
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+    fetchUserCart();
   }, [user]);
 
-  useEffect(() => {
-    fetchCart(token);
-  }, []);
 
   if (loading) {
     return (
@@ -68,6 +65,8 @@ function App() {
       </div>
     )
   }
+
+  console.log("user in App:", user);
 
   return (
     <div>

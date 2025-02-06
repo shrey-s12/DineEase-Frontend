@@ -9,6 +9,8 @@ const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
 export const Auth = () => {
     const user = useSelector(state => state.auth.user);
     const location = useLocation();
+    console.log("user in Auth:", user);
+
     return (
         user
             ? <Outlet />
