@@ -52,9 +52,11 @@ const Navbar = () => {
                                 </Link>
                             )}
 
-                            <Link to="/counters" className="text-white text-lg font-medium hover:text-yellow-400 transition">
-                                Counters
-                            </Link>
+                            {(user.role === "Customer" || user.role === "Admin") && (
+                                <Link to="/counters" className="text-white text-lg font-medium hover:text-yellow-400 transition">
+                                    Counters
+                                </Link>
+                            )}
 
                             <Link to="/dishes" className="text-white text-lg font-medium hover:text-yellow-400 transition" >
                                 Dishes
@@ -69,15 +71,17 @@ const Navbar = () => {
                             </Link>
 
                             {/* Cart */}
-                            <Link to="/cart" className="relative flex items-center text-white font-medium hover:text-yellow-400 transition" >
-                                <button className="relative">
-                                    <LiaShoppingCartSolid className="text-3xl" />
-                                    <div className="absolute -top-1 -right-2 bg-yellow-500 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                        {cartCount}
-                                    </div>
-                                </button>
-                                <span className="hidden md:inline ml-2">Cart</span>
-                            </Link>
+                            {user.role === "Customer" && (
+                                <Link to="/cart" className="relative flex items-center text-white font-medium hover:text-yellow-400 transition" >
+                                    <button className="relative">
+                                        <LiaShoppingCartSolid className="text-3xl" />
+                                        <div className="absolute -top-1 -right-2 bg-yellow-500 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                            {cartCount}
+                                        </div>
+                                    </button>
+                                    <span className="hidden md:inline ml-2">Cart</span>
+                                </Link>
+                            )}
                         </div>
 
                     </>
