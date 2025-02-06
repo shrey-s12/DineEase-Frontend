@@ -10,7 +10,7 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const MerchantCounters = () => {
     const dispatch = useDispatch();
     const counters = useSelector(state => state.counter.counters);
-    const user = useSelector(state => state.auth.user);
+    const user = useSelector(state => state.auth?.user);
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
 
