@@ -6,6 +6,7 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 const token = localStorage.getItem('token');
 
 const Dish = ({ dish, updateDish }) => {
+    const user = useSelector(state => state.auth.user);
     const disptach = useDispatch();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
 
@@ -25,7 +26,6 @@ const Dish = ({ dish, updateDish }) => {
     const addCartItem = async (dishId) => {
         disptach(addToCart(dishId));
     };
-
 
     const handleEditDish = async (e, id) => {
         e.preventDefault();
@@ -77,48 +77,52 @@ const Dish = ({ dish, updateDish }) => {
                         <span className="font-bold">Category: {dish.category}</span>
                     </div>
                     <div className="mt-1 flex justify-between items-center">
-                        {quantity ? (
-                            <div className="flex items-center space-x-2">
+                        {user.role === "Customer" && (
+                            quantity ? (
+                                <div className="flex items-center space-x-2" >
+                                    <button
+                                        onClick={() => handleDecrement(dish._id)}
+                                        className={`rounded-lg px-4 py-2 ${dish.inStock
+                                            ? "bg-amber-500 text-white hover:bg-amber-600"
+                                            : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                            }`}
+                                        disabled={!dish.inStock}
+                                    >
+                                        -
+                                    </button>
+                                    <span>{quantity}</span>
+                                    <button
+                                        onClick={() => handleIncrement(dish._id)}
+                                        className={`rounded-lg px-4 py-2 ${dish.inStock
+                                            ? "bg-amber-500 text-white hover:bg-amber-600"
+                                            : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                            }`}
+                                        disabled={!dish.inStock}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            ) : (
                                 <button
-                                    onClick={() => handleDecrement(dish._id)}
+                                    onClick={() => addCartItem(dish._id)}
                                     className={`rounded-lg px-4 py-2 ${dish.inStock
                                         ? "bg-amber-500 text-white hover:bg-amber-600"
                                         : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                         }`}
                                     disabled={!dish.inStock}
                                 >
-                                    -
+                                    Add to Cart
                                 </button>
-                                <span>{quantity}</span>
-                                <button
-                                    onClick={() => handleIncrement(dish._id)}
-                                    className={`rounded-lg px-4 py-2 ${dish.inStock
-                                        ? "bg-amber-500 text-white hover:bg-amber-600"
-                                        : "bg-gray-400 text-gray-700 cursor-not-allowed"
-                                        }`}
-                                    disabled={!dish.inStock}
-                                >
-                                    +
-                                </button>
-                            </div>
-                        ) : (
+                            )
+                        )}
+                        {user.role === "Merchant" && (
                             <button
-                                onClick={() => addCartItem(dish._id)}
-                                className={`rounded-lg px-4 py-2 ${dish.inStock
-                                    ? "bg-amber-500 text-white hover:bg-amber-600"
-                                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
-                                    }`}
-                                disabled={!dish.inStock}
+                                onClick={() => setIsEditing(true)}
+                                className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600"
                             >
-                                Add to Cart
+                                Edit Dish
                             </button>
                         )}
-                        <button
-                            onClick={() => setIsEditing(true)}
-                            className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600"
-                        >
-                            Edit Dish
-                        </button>
                     </div>
                 </>
             ) : (
@@ -186,8 +190,9 @@ const Dish = ({ dish, updateDish }) => {
                         </button>
                     </div>
                 </form>
-            )}
-        </div>
+            )
+            }
+        </div >
 
     );
 };
