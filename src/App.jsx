@@ -70,8 +70,8 @@ function App() {
     <div>
       <Routes>
         <Route element={<Navbar />}>
+          <Route path="/" element={<HomePage />} />
           <Route element={<Auth />}>
-            <Route path="/" element={<HomePage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/counters" element={<CountersPage />} />
             <Route path="/dishes" element={<DishesPage />} />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import banner from '../assets/Banner2.jpg';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { StaticCounters, StaticDishes } from '../data';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const HeroSection = () => {
@@ -89,6 +90,11 @@ const HomePage = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    if (!token) {
+      setCounters(StaticCounters);
+      setDishes(StaticDishes);
+    }
+
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -125,19 +131,20 @@ const HomePage = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* Hero Section */}
       <HeroSection />
-
-      {/* Categories Section (static) */}
       <TopCategories />
 
-      {/* Top Counters Section */}
-      <TopCounters counters={counters} />
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-white"></div>
+        </div>
+      ) : (
+        <>
+          <TopCounters counters={counters} />
+          <TopDishes dishes={dishes} />
+        </>
+      )}
 
-      {/* Top Dishes Section */}
-      <TopDishes dishes={dishes} />
-
-      {/* About Section */}
       <AboutSection />
 
     </div>
