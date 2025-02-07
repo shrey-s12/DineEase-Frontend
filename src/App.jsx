@@ -84,8 +84,8 @@ function App() {
             <Route path="/merchantCounters" element={<MerchantCounters />} />
           </Route>
           <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/register" element={<RegisterPage />} />
         </Route>
-        <Route path="/auth/register" element={<RegisterPage />} />
       </Routes>
       {user && <Footer />}
     </div>
