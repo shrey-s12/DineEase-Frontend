@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Dish = ({ dish, updateDish }) => {
@@ -44,9 +45,11 @@ const Dish = ({ dish, updateDish }) => {
                 }
             });
             updateDish(response.data);
+            toast.success("Dish updated successfully");
             setIsEditing(false);
         } catch (error) {
             console.error("Error editing dish:", error);
+            toast.error("Error editing dish");
         }
     };
 
