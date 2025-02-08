@@ -18,7 +18,6 @@ const AllUsersPage = () => {
                 const response = await axios.get(`${MAIN_URL}/user`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                // console.log("users", response.data);
                 dispatch(setUsers(response.data));
             } catch (error) {
                 console.error(error);
@@ -28,11 +27,9 @@ const AllUsersPage = () => {
         fetchUsers();
     }, []);
 
-    console.log("object", users);
     const admins = users.filter((user) => user.role === "Admin");
     const merchants = users.filter((user) => user.role === "Merchant");
     const customers = users.filter((user) => user.role === "Customer");
-    console.log("Admins:", admins);
 
     return (
         <div className="min-h-screen bg-gray-900 text-white p-6">
