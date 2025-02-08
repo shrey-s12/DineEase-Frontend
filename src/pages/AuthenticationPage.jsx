@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../slices/authSlice";
+import { toast } from "react-toastify";
 
 const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
 
@@ -32,13 +33,16 @@ const AuthPage = ({ type }) => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("refresh_token", res.data.refresh_token);
                 dispatch(setUser(res.data.user));
+                toast.success("Login successful! 🎉");
                 navigate("/profile");
             } else {
                 await axios.post(`${AUTH_URL}/auth/register`, { name, email, password });
+                toast.success("Account created successfully! 🎉");
                 navigate("/auth/login");
             }
         } catch (error) {
             console.error("Error:", error);
+            toast.error(error.response.data.message);
         }
     };
 

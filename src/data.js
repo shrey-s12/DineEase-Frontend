@@ -9,37 +9,37 @@ const StaticCategories = [
     {
         _id: "1",
         name: "Burger",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO_xyRaBbC4bJ2GmuSVLlUhpl0uXLuNAJ6LQ&s",
+        image: "https://static.toiimg.com/thumb/83565509.cms?width=1200&height=900",
     },
     {
         _id: "2",
         name: "Pasta",
-        image: "https://img1.wsimg.com/isteam/ip/83632b42-f400-4ec0-9d34-7d32466970e2/A4C6E1A3-89B5-4F6E-AAFE-403E60AA3494.jpeg",
+        image: "https://skinnyspatula.com/wp-content/uploads/2022/01/Pink_Pasta_Sauce2.jpg",
     },
     {
         _id: "3",
         name: "Pizza",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ5ws5qfvThY8ZLvzhn-O7jJsB6xmnx5W6mw&s",
+        image: "https://b.zmtcdn.com/data/pictures/2/19515142/cae9fcd0a7fd93e2d0e7423ae6a8ebc9_o2_featured_v2.jpg",
     },
     {
         _id: "4",
         name: "Shawarma",
-        image: "https://media-cdn.grubhub.com/image/upload/d_search:browse-images:default.jpg/w_300,q_100,fl_lossy,dpr_2.0,c_fit,f_auto,h_300/oxpywb3ibcqd6vtszdfq",
+        image: "https://content.jdmagicbox.com/comp/def_content/shawarma_centres/default-shawarma-centres-11.jpg",
     },
     {
         _id: "5",
         name: "Sushi",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO_xyRaBbC4bJ2GmuSVLlUhpl0uXLuNAJ6LQ&s",
+        image: "https://www.licious.in/blog/wp-content/uploads/2022/04/shutterstock_1617156526-min.jpg",
     },
     {
         _id: "6",
         name: "Taco",
-        image: "https://img1.wsimg.com/isteam/ip/83632b42-f400-4ec0-9d34-7d32466970e2/A4C6E1A3-89B5-4F6E-AAFE-403E60AA3494.jpeg",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiqTiKRduswmYNKKjmXKWt0ZDiBHhOqiaWyA&s",
     },
     {
         _id: "7",
         name: "Waffle",
-        image: "https://media-cdn.grubhub.com/image/upload/d_search:browse-images:default.jpg/w_300,q_100,fl_lossy,dpr_2.0,c_fit,f_auto,h_300/oxpywb3ibcqd6vtszdfq",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4r9f0drfanCFBd1xij9DHfOx60VDORBUs5w&s",
     },
 ]
 

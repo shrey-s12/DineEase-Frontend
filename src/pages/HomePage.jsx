@@ -24,36 +24,46 @@ const HeroSection = () => {
 
 const TopCategories = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
+
   const handleClick = () => {
     if (token) {
-      navigate('/dishes');
+      navigate("/dishes");
     } else {
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
   };
+
   return (
     <section className="container mx-auto py-12">
-      <h2 className="text-3xl font-semibold text-center mb-8">Explore Categories</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-        {StaticCategories.map(category => (
+      <h2 className="text-4xl font-bold text-center mb-10">
+        Explore Categories
+      </h2>
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6 px-6 justify-center">
+        {StaticCategories.map((category) => (
           <button
             onClick={handleClick}
             key={category._id}
-            className="bg-gray-800 p-6 rounded-lg cursor-pointer shadow-lg hover:bg-gray-700 transition flex flex-col items-center justify-center"
+            className="flex flex-col items-center gap-3 group"
           >
-            <img
-              src={category.image}
-              alt={category.name}
-              className="w-20 h-20 rounded-full mb-3 object-cover border-2 border-gray-600"
-            />
-            <span className="text-lg font-semibold">{category.name}</span>
+            {/* Rounded Image with Shadow & Hover Effect */}
+            <div className="relative w-28 h-28">
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-full h-full rounded-full object-cover border-4 border-gray-300 shadow-md transition-transform duration-300 group-hover:scale-110"
+              />
+            </div>
+            {/* Category Name */}
+            <span className="text-lg font-semibold text-gray-300 group-hover:text-gray-900 transition">
+              {category.name}
+            </span>
           </button>
         ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
 const TopCounters = ({ counters }) => {
   return (

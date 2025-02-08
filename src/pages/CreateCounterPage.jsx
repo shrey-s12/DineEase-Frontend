@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
@@ -53,8 +54,10 @@ const CreateCounterPage = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
+            toast.success("Counter created successfully.");
         } catch (error) {
             console.error("Error creating counter:", error);
+            toast.error("Error creating counter. Please try again.");
         }
         navigate("/counters");
     };
