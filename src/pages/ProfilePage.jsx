@@ -13,14 +13,13 @@ function ProfilePage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-6 flex justify-center items-center">
-      <div className="w-full max-w-2xl bg-gray-800 shadow-lg rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-center text-gray-200 mb-4">Profile</h1>
+    <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col items-center  p-6">
+      <h1 className="text-5xl font-bold text-blue-500 mb-6">Your Profile</h1>
 
-        {/* Show loading spinner while fetching data */}
+      <div className="w-full max-w-xl bg-gray-900 shadow-lg rounded-xl p-8 flex flex-col items-center relative">
         {loading ? (
           <div className="flex justify-center items-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-white"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
           </div>
         ) : (
           <Profile user={user} />
