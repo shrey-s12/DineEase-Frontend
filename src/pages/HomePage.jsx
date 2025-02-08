@@ -5,6 +5,7 @@ import axios from 'axios';
 import { StaticCategories } from '../data';
 import Dish from '../components/Dish';
 import Counter from '../components/Counter';
+import { useSelector } from 'react-redux';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const HeroSection = () => {
@@ -105,15 +106,30 @@ const HomePage = () => {
   const [counters, setCounters] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = useSelector(state => state.auth.user);
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const counterRes = await axios.get(`${MAIN_URL}/counter`);
-        setCounters(counterRes.data.slice(0, 4)); // Show top 4 counters
+        let counterRes, dishRes;
 
-        const dishRes = await axios.get(`${MAIN_URL}/dish`);
-        setDishes(dishRes.data.slice(0, 4)); // Show top 4 dishes
+        if (user && user?.role === "Merchant") {
+          counterRes = await axios.get(`${MAIN_URL}/counter/merchant/${user._id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          dishRes = await axios.get(`${MAIN_URL}/dish/merchant/${user._id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } else {
+          counterRes = await axios.get(`${MAIN_URL}/counter`);
+          dishRes = await axios.get(`${MAIN_URL}/dish`);
+        }
+
+        setCounters(counterRes.data.slice(0, 4));
+        setDishes(dishRes.data.slice(0, 4));
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -122,7 +138,8 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user, token]);
+
 
   const updateDish = (updatedDish) => {
     setDishes((prevDishes) =>
