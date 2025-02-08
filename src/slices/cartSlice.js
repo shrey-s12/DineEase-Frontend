@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const initialState = {
@@ -17,15 +18,19 @@ export const cartSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(addToCart.fulfilled, (state, action) => {
             state.items = action.payload;
+            toast.success("Dish added to cart! 🛒");
         });
         builder.addCase(addToCart.rejected, (state, action) => {
             console.log(action);
+            toast.error("Failed to add to cart! 🛒");
         });
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = action.payload;
+            toast.success("Dish removed from cart! 🛒");
         });
         builder.addCase(removeFromCart.rejected, (state, action) => {
             console.log(action);
+            toast.error("Failed to remove from cart! 🛒");
         });
         builder.addCase(incrementQuantity.fulfilled, (state, action) => {
             state.items = action.payload;
