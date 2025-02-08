@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
@@ -33,9 +34,11 @@ const CreateDishPage = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
+            toast.success("Dish created successfully.");
             navigate(-1);
         } catch (error) {
             console.error("Error creating dish:", error);
+            toast.error("Error creating dish. Please try again.");
         }
     }
 
