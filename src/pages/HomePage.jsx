@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import banner from '../assets/Banner2.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { StaticCounters, StaticDishes } from '../data';
+import { StaticCategories } from '../data';
+import Dish from '../components/Dish';
+import Counter from '../components/Counter';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const HeroSection = () => {
@@ -20,14 +22,32 @@ const HeroSection = () => {
 }
 
 const TopCategories = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const handleClick = () => {
+    if (token) {
+      navigate('/dishes');
+    } else {
+      navigate('/auth/login');
+    }
+  };
   return (
     <section className="container mx-auto py-12">
       <h2 className="text-3xl font-semibold text-center mb-8">Explore Categories</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-        {['🍕 Pizza', '🍔 Burgers', '🍣 Sushi', '🍰 Desserts'].map((category, index) => (
-          <div key={index} className="bg-gray-800 p-6 rounded-lg shadow-lg text-center hover:bg-gray-700 transition">
-            {category}
-          </div>
+        {StaticCategories.map(category => (
+          <button
+            onClick={handleClick}
+            key={category._id}
+            className="bg-gray-800 p-6 rounded-lg cursor-pointer shadow-lg hover:bg-gray-700 transition flex flex-col items-center justify-center"
+          >
+            <img
+              src={category.image}
+              alt={category.name}
+              className="w-20 h-20 rounded-full mb-3 object-cover border-2 border-gray-600"
+            />
+            <span className="text-lg font-semibold">{category.name}</span>
+          </button>
         ))}
       </div>
     </section>
@@ -41,8 +61,8 @@ const TopCounters = ({ counters }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
         {counters.length > 0 ? (
           counters.map(counter => (
-            <Link to={`/dish/counter/${counter._id}`} key={counter._id} className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition text-center">
-              {counter.name}
+            <Link to={`/dish/counter/${counter._id}`} key={counter._id}>
+              <Counter counter={counter} />
             </Link>
           ))
         ) : (
@@ -53,16 +73,14 @@ const TopCounters = ({ counters }) => {
   )
 }
 
-const TopDishes = ({ dishes }) => {
+const TopDishes = ({ dishes, updateDish }) => {
   return (
     <section className="container mx-auto py-12">
       <h2 className="text-3xl font-semibold text-center mb-8">Top Dishes</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
         {dishes.length > 0 ? (
           dishes.map(dish => (
-            <div key={dish._id} className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition text-center">
-              {dish.name}
-            </div>
+            <Dish key={dish._id} dish={dish} updateDish={updateDish} />
           ))
         ) : (
           <p className="text-center col-span-full text-gray-400">No dishes available.</p>
@@ -87,29 +105,14 @@ const HomePage = () => {
   const [counters, setCounters] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
-    if (!token) {
-      setCounters(StaticCounters);
-      setDishes(StaticDishes);
-    }
-
     const fetchData = async () => {
       setLoading(true);
       try {
-        const counterRes = await axios.get(`${MAIN_URL}/counter`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const counterRes = await axios.get(`${MAIN_URL}/counter`);
         setCounters(counterRes.data.slice(0, 4)); // Show top 4 counters
 
-        const dishRes = await axios.get(`${MAIN_URL}/dish`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const dishRes = await axios.get(`${MAIN_URL}/dish`);
         setDishes(dishRes.data.slice(0, 4)); // Show top 4 dishes
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -120,6 +123,14 @@ const HomePage = () => {
 
     fetchData();
   }, []);
+
+  const updateDish = (updatedDish) => {
+    setDishes((prevDishes) =>
+      prevDishes.map((dish) =>
+        dish._id === updatedDish._id ? updatedDish : dish
+      )
+    );
+  };
 
   if (loading) {
     return (
@@ -141,7 +152,7 @@ const HomePage = () => {
       ) : (
         <>
           <TopCounters counters={counters} />
-          <TopDishes dishes={dishes} />
+          <TopDishes dishes={dishes} updateDish={updateDish} />
         </>
       )}
 
