@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
+import { useNavigate } from 'react-router-dom';
 const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Dish = ({ dish, updateDish }) => {
     const user = useSelector(state => state.auth.user);
     const disptach = useDispatch();
+    const navigate = useNavigate();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
     const token = localStorage.getItem('token');
 
@@ -24,7 +26,6 @@ const Dish = ({ dish, updateDish }) => {
         disptach(incrementQuantity(dishId));
     };
     const addCartItem = async (dishId) => {
-        console.log("dishId", dishId);
         disptach(addToCart(dishId));
     };
 
@@ -78,7 +79,19 @@ const Dish = ({ dish, updateDish }) => {
                         <span className="font-bold">Category: {dish.category}</span>
                     </div>
                     <div className="mt-1 flex justify-between items-center">
-                        {user.role === "Customer" && (
+                        {!user && (
+                            <button
+                                onClick={() => navigate("/auth/login")}
+                                className={`rounded-lg px-4 py-2 ${dish.inStock
+                                    ? "bg-amber-500 text-white hover:bg-amber-600"
+                                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                    }`}
+                                disabled={!dish.inStock}
+                            >
+                                Add to Cart
+                            </button>
+                        )}
+                        {user?.role === "Customer" && (
                             quantity ? (
                                 <div className="flex items-center space-x-2" >
                                     <button
@@ -116,7 +129,7 @@ const Dish = ({ dish, updateDish }) => {
                                 </button>
                             )
                         )}
-                        {user.role === "Merchant" && (
+                        {user?.role === "Merchant" && (
                             <button
                                 onClick={() => setIsEditing(true)}
                                 className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600"
