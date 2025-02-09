@@ -8,7 +8,7 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const Dish = ({ dish, updateDish }) => {
     const user = useSelector(state => state.auth.user);
-    const disptach = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
     const token = localStorage.getItem('token');
@@ -20,15 +20,26 @@ const Dish = ({ dish, updateDish }) => {
     const [price, setPrice] = useState(dish.price);
     const [inStock, setInStock] = useState(dish.inStock);
 
+    const [loadingDish, setLoadingDish] = useState(false);
+
     const handleDecrement = async (dishId) => {
-        disptach(decrementQuantity(dishId));
+        setLoadingDish(true);
+        await dispatch(decrementQuantity(dishId));
+        setLoadingDish(false);
     };
+
     const handleIncrement = async (dishId) => {
-        disptach(incrementQuantity(dishId));
+        setLoadingDish(true);
+        await dispatch(incrementQuantity(dishId));
+        setLoadingDish(false);
     };
+
     const addCartItem = async (dishId) => {
-        disptach(addToCart(dishId));
+        setLoadingDish(true);
+        await dispatch(addToCart(dishId));
+        setLoadingDish(false);
     };
+
 
     const handleEditDish = async (e, id) => {
         e.preventDefault();
@@ -82,6 +93,7 @@ const Dish = ({ dish, updateDish }) => {
                         <span className="font-bold">Category: {dish.category}</span>
                     </div>
                     <div className="mt-1 flex justify-between items-center">
+                        {/* No user */}
                         {!user && (
                             <button
                                 onClick={() => navigate("/auth/login")}
@@ -94,27 +106,35 @@ const Dish = ({ dish, updateDish }) => {
                                 Add to Cart
                             </button>
                         )}
+
+                        {/* user role === Customer */}
                         {user?.role === "Customer" && (
                             quantity ? (
-                                <div className="flex items-center space-x-2" >
+                                <div className="flex items-center space-x-2">
                                     <button
                                         onClick={() => handleDecrement(dish._id)}
-                                        className={`rounded-lg px-4 py-2 ${dish.inStock
+                                        className={`rounded-lg px-4 py-2 ${dish.inStock && !loadingDish
                                             ? "bg-amber-500 text-white hover:bg-amber-600"
                                             : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                             }`}
-                                        disabled={!dish.inStock}
+                                        disabled={!dish.inStock || loadingDish}
                                     >
                                         -
                                     </button>
-                                    <span>{quantity}</span>
+
+                                    {loadingDish ? (
+                                        <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></span>
+                                    ) : (
+                                        <span className="text-lg font-bold">{quantity}</span>
+                                    )}
+
                                     <button
                                         onClick={() => handleIncrement(dish._id)}
-                                        className={`rounded-lg px-4 py-2 ${dish.inStock
+                                        className={`rounded-lg px-4 py-2 ${dish.inStock && !loadingDish
                                             ? "bg-amber-500 text-white hover:bg-amber-600"
                                             : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                             }`}
-                                        disabled={!dish.inStock}
+                                        disabled={!dish.inStock || loadingDish}
                                     >
                                         +
                                     </button>
@@ -122,16 +142,25 @@ const Dish = ({ dish, updateDish }) => {
                             ) : (
                                 <button
                                     onClick={() => addCartItem(dish._id)}
-                                    className={`rounded-lg px-4 py-2 ${dish.inStock
+                                    className={`rounded-lg px-4 py-2 flex items-center justify-center space-x-2 transition-all duration-300 ${dish.inStock && !loadingDish
                                         ? "bg-amber-500 text-white hover:bg-amber-600"
                                         : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                         }`}
-                                    disabled={!dish.inStock}
+                                    disabled={!dish.inStock || loadingDish}
                                 >
-                                    Add to Cart
+                                    {loadingDish ? (
+                                        <>
+                                            <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></span>
+                                            <span className="ml-2">Adding...</span>
+                                        </>
+                                    ) : (
+                                        "Add to Cart"
+                                    )}
                                 </button>
                             )
                         )}
+
+                        {/* user role === Merchant */}
                         {user?.role === "Merchant" && (
                             <button
                                 onClick={() => setIsEditing(true)}
@@ -207,8 +236,7 @@ const Dish = ({ dish, updateDish }) => {
                         </button>
                     </div>
                 </form>
-            )
-            }
+            )}
         </div >
 
     );
