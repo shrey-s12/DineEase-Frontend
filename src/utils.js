@@ -44,8 +44,8 @@ export async function retryApi(method, url, body) {
         }
 
         console.warn("JWT expired! Refreshing token...");
-        await refreshToken(); // Refresh the token
-        return apiCall(); // Retry the original request
+        await refreshToken();
+        return apiCall();
     });
 }
 
