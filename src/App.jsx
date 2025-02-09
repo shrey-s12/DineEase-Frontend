@@ -9,7 +9,7 @@ import DishesPage from "./pages/DishesPage"
 import ProfilePage from "./pages/ProfilePage"
 import { useDispatch, useSelector } from "react-redux"
 import { setUser, setLoading } from "./slices/authSlice.js"
-import { setCart } from "./slices/cartSlice"
+import { setCart, setCartLoading } from "./slices/cartSlice"
 import { Auth, LoginPage, RegisterPage } from "./pages/AuthenticationPage"
 import DishesByCounter from "./components/DishesByCounter"
 import AllUsersPage from "./pages/AllUsersPage"
@@ -45,6 +45,7 @@ function App() {
 
   useEffect(() => {
     async function fetchUserCart() {
+      dispatch(setCartLoading(true))
       try {
         const res = await axios.get(`${MAIN_URL}/cart`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -53,6 +54,8 @@ function App() {
         dispatch(setCart(cart));
       } catch (err) {
         console.error(err.message);
+      } finally {
+        dispatch(setCartLoading(false))
       }
     }
     fetchUserCart();

@@ -5,6 +5,7 @@ const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
 const initialState = {
     items: [],
+    loading: false,
 }
 
 export const cartSlice = createSlice({
@@ -14,8 +15,12 @@ export const cartSlice = createSlice({
         setCart: (state, action) => {
             state.items = action.payload;
         },
+        setCartLoading: (state, action) => {
+            state.loading = action.payload
+        }
     },
     extraReducers: (builder) => {
+        // ✅ Add to Cart
         builder.addCase(addToCart.fulfilled, (state, action) => {
             state.items = action.payload;
             toast.success("Dish added to cart! 🛒");
@@ -24,6 +29,8 @@ export const cartSlice = createSlice({
             console.log(action);
             toast.error("Failed to add to cart! 🛒");
         });
+
+        // ✅ Remove from Cart
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = action.payload;
             toast.success("Dish removed from cart! 🛒");
@@ -32,12 +39,16 @@ export const cartSlice = createSlice({
             console.log(action);
             toast.error("Failed to remove from cart! 🛒");
         });
+
+        // ✅ Increment Quantity
         builder.addCase(incrementQuantity.fulfilled, (state, action) => {
             state.items = action.payload;
         });
         builder.addCase(incrementQuantity.rejected, (state, action) => {
             console.log(action);
         });
+
+        // ✅ Decrement Quantity
         builder.addCase(decrementQuantity.fulfilled, (state, action) => {
             state.items = action.payload;
         });
@@ -47,7 +58,7 @@ export const cartSlice = createSlice({
     },
 });
 
-export const { setCart } = cartSlice.actions;
+export const { setCart, setCartLoading } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
