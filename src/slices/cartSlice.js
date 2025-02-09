@@ -21,39 +21,59 @@ export const cartSlice = createSlice({
     },
     extraReducers: (builder) => {
         // ✅ Add to Cart
+        builder.addCase(addToCart.pending, (state) => {
+            state.loading = true;
+        });
         builder.addCase(addToCart.fulfilled, (state, action) => {
             state.items = action.payload;
+            state.loading = false;
             toast.success("Dish added to cart! 🛒");
         });
-        builder.addCase(addToCart.rejected, (state, action) => {
+        builder.addCase(addToCart.rejected, (state) => {
             console.log(action);
+            state.loading = false;
             toast.error("Failed to add to cart! 🛒");
         });
 
         // ✅ Remove from Cart
+        builder.addCase(removeFromCart.pending, (state) => {
+            state.loading = true;
+        });
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = action.payload;
+            state.loading = false;
             toast.success("Dish removed from cart! 🛒");
         });
         builder.addCase(removeFromCart.rejected, (state, action) => {
             console.log(action);
+            state.loading = false;
             toast.error("Failed to remove from cart! 🛒");
         });
 
         // ✅ Increment Quantity
+        builder.addCase(incrementQuantity.pending, (state) => {
+            state.loading = true;
+        });
         builder.addCase(incrementQuantity.fulfilled, (state, action) => {
             state.items = action.payload;
+            state.loading = false;
         });
         builder.addCase(incrementQuantity.rejected, (state, action) => {
             console.log(action);
+            state.loading = false;
         });
 
         // ✅ Decrement Quantity
+        builder.addCase(decrementQuantity.pending, (state) => {
+            state.loading = true;
+        });
         builder.addCase(decrementQuantity.fulfilled, (state, action) => {
             state.items = action.payload;
+            state.loading = false;
         });
         builder.addCase(decrementQuantity.rejected, (state, action) => {
             console.log(action);
+            state.loading = false;
         });
     },
 });
