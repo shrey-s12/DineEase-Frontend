@@ -28,9 +28,7 @@ function App() {
     async function fetchUser() {
       dispatch(setLoading(true));
       try {
-        console.log("App.jsx fetchUser");
         const user = await retryGetApi("/cart");
-        console.log("user", user);
         dispatch(setUser(user));
       } catch (err) {
         console.error(err.message);

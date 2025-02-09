@@ -28,7 +28,6 @@ const Dish = ({ dish, updateDish }) => {
 
     const handleIncrement = async (dishId) => {
         setLoadingDish(true);
-        console.log("shreys12")
         await dispatch(incrementQuantity(dishId));
         setLoadingDish(false);
     };

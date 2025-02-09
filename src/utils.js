@@ -26,7 +26,6 @@ export async function retryApi(method, url, body) {
 
     const refreshToken = async () => {
         try {
-            console.log("Refreshing token...");
             const newToken = await authCall.token();
             axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
         } catch (err) {
@@ -58,7 +57,6 @@ export const authCall = {
     },
     token: async () => {
         const refresh_token = localStorage.getItem('refresh_token');
-        console.log("Using refresh_token:", refresh_token);
 
         if (!refresh_token) {
             console.error("No refresh token found!");
@@ -70,9 +68,6 @@ export const authCall = {
                 Authorization: `Bearer ${refresh_token}`,
             }
         });
-
-        console.log("Refresh Token Response:", response);
-        console.log("Refresh Token Response.data:", response.data);
 
         const { token: newToken } = response.data;
         localStorage.setItem('token', newToken);
