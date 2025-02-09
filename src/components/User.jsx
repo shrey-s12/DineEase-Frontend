@@ -1,24 +1,20 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { updateUser, deleteUser } from "../slices/usersSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from "../hooks";
 
 const User = ({ user }) => {
     const [role, setRole] = useState(user.role);
-    const token = localStorage.getItem("token");
+    const retryPutApi = useRetryApi('put');
+    const retryDeleteApi = useRetryApi('delete');
     const dispatch = useDispatch();
 
     const handleEditUser = async (role) => {
         try {
-            const response = await axios.put(`${MAIN_URL}/user/${user._id}`,
-                { role },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            dispatch(updateUser(response.data));
-            setRole(response.data.role);
+            const response = await retryPutApi(`/user/${user._id}`, { role });
+            dispatch(updateUser(response));
+            setRole(response.role);
             toast.success("User role updated!");
         } catch (error) {
             console.error("Error updating user role:", error);
@@ -28,9 +24,7 @@ const User = ({ user }) => {
 
     const handleDeleteUser = async () => {
         try {
-            await axios.delete(`${MAIN_URL}/user/${user._id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await retryDeleteApi(`/user/${user._id}`);
             dispatch(deleteUser(user));
             toast.success("User deleted successfully!");
         } catch (error) {

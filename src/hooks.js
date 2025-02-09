@@ -1,40 +1,48 @@
-import axios from "axios";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "./slices/authSlice";
+import { authCall, REFRESH_TOKEN_ERROR, retryApi } from "./utils";
+const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 
-const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
-
-function axiosAuthConfig(method, token, url, body) {
-    return {
-        method: method,
-        url: url,
-        data: body,
-        headers: {
-            Authorization: `Bearer ${token}`
+export const useRetryApi = (method) => {
+    const dispatch = useDispatch();
+    const call = async (url, body) => {
+        try {
+            return await retryApi(method, url, body);
+        } catch (err) {
+            if (err.message === REFRESH_TOKEN_ERROR) {
+                dispatch(setUser(null));
+            }
+            throw err;
         }
     };
-}
+    return call;
+};
 
-export function useRetryCall(method) {
-    const [loading, setLoading] = useState(false);
-    const call = async (url, body) => {
-        setLoading(true);
+export const useAuthLogin = () => {
+    const retryGetApi = useRetryApi('get');
+    const dispatch = useDispatch();
+
+    const fetchUser = async () => {
         try {
-            const token = localStorage.getItem('token');
-            return await axios.request(axiosAuthConfig(method, token, url, body));
+            const user = await retryGetApi(`${MAIN_URL}/cart`);
+            dispatch(setUser(user));
         } catch (err) {
-            const errorMessage = err?.response?.data?.error;
-            if (errorMessage !== 'jwt expired') {
-                throw err;
-            }
-            const refresh_Token = localStorage.getItem('refresh_token');
-            const response = await axios.post(`${AUTH_URL}/auth/token`, { token: refresh_Token });
-            const { token: newToken } = response.data;
-            localStorage.setItem('token', newToken);
-            console.log("newToken", newToken);
-            return await axios.request(axiosAuthConfig(method, newToken, url, body));
-        } finally {
-            setLoading(false);
+            console.error('Error fetching cart:', err);
+            throw err;
         }
-    }
-    return [loading, call];
-}
+    };
+    const login = async (email, password) => {
+        await authCall.login(email, password);
+        await fetchUser();
+    };
+    return login;
+};
+
+export const useAuthLogout = () => {
+    const dispatch = useDispatch();
+    const logout = async () => {
+        await authCall.logout();
+        dispatch(setUser(null));
+    };
+    return logout;
+};

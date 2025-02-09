@@ -1,4 +1,3 @@
-import axios from "axios"
 import React, { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Navbar from "./components/Navbar"
@@ -17,22 +16,19 @@ import CreateCounterPage from "./pages/CreateCounterPage"
 import CreateDishPage from "./pages/CreateDishPage"
 import Footer from "./components/Footer"
 import MerchantCounters from "./pages/MerchantCounters.jsx"
+import { useRetryApi } from "./hooks.js"
 
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const loading = useSelector(state => state.auth.loading);
-  const token = localStorage.getItem('token');
+  const retryGetApi = useRetryApi('get');
 
   useEffect(() => {
     async function fetchUser() {
       dispatch(setLoading(true));
       try {
-        const res = await axios.get(`${MAIN_URL}/cart`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        const user = res.data;
+        const user = await retryGetApi("/cart");
         dispatch(setUser(user));
       } catch (err) {
         console.error(err.message);
@@ -47,10 +43,8 @@ function App() {
     async function fetchUserCart() {
       dispatch(setCartLoading(true))
       try {
-        const res = await axios.get(`${MAIN_URL}/cart`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        const cart = res.data.cart;
+        const res = await retryGetApi("/cart");
+        const cart = res.cart;
         dispatch(setCart(cart));
       } catch (err) {
         console.error(err.message);

@@ -1,24 +1,20 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import User from "../components/User";
 import { useDispatch, useSelector } from "react-redux";
 import { setUsers } from "../slices/usersSlice";
 import { toast } from "react-toastify";
-
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from "../hooks";
 
 const AllUsersPage = () => {
     const dispatch = useDispatch();
-    const token = localStorage.getItem("token");
+    const retryGetApi = useRetryApi('get');
     const { users, loading } = useSelector((state) => state.users);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`${MAIN_URL}/user`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                dispatch(setUsers(response.data));
+                const response = await retryGetApi("/user");
+                dispatch(setUsers(response));
             } catch (error) {
                 console.error(error);
                 toast.error("Error fetching users!");

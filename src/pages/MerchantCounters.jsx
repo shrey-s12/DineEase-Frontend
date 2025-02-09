@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Counter from '../components/Counter';
 import { setCounters } from '../slices/counterSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from '../hooks';
 
 const MerchantCounters = () => {
     const dispatch = useDispatch();
     const counters = useSelector(state => state.counter.counters);
     const user = useSelector(state => state.auth?.user);
     const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('token');
+    const retryGetApi = useRetryApi('get');
 
     useEffect(() => {
         const fetchMerchantCounters = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${MAIN_URL}/counter/merchant/${user._id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                dispatch(setCounters(response.data));
+                const response = await retryGetApi(`/counter/merchant/${user._id}`);
+                dispatch(setCounters(response));
             } catch (error) {
                 console.error(error);
             }

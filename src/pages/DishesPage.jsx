@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import Dish from '../components/Dish';
 import { useSelector } from 'react-redux';
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from '../hooks';
 
 const DishesPage = () => {
 
@@ -10,7 +9,8 @@ const DishesPage = () => {
   const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem('token');
+  const retryGetApi = useRetryApi('get');
+
 
   const handleFilterChange = (e) => {
     setFilter(e.target.checked ? "inStock" : "");
@@ -23,16 +23,11 @@ const DishesPage = () => {
         const query = filter === "inStock" ? "?inStock=true" : "";
         let response;
         if (user.role === "Merchant") {
-          response = await axios.get(`${MAIN_URL}/dish/merchant/${user._id}${query}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          response = await retryGetApi(`/dish/merchant/${user._id}${query}`);
         } else {
-          response = await axios.get(`${MAIN_URL}/dish${query}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          response = await retryGetApi(`/dish${query}`);
         }
-
-        setDishes(response.data);
+        setDishes(response);
       } catch (error) {
         console.error(error);
       } finally {

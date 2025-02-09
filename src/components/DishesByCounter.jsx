@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { Link, useParams } from 'react-router-dom';
 import Dish from './Dish';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCounter } from '../slices/counterSlice';
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from '../hooks';
 
 const DishesByCounter = () => {
     const { counterId } = useParams();
@@ -13,25 +12,17 @@ const DishesByCounter = () => {
     const user = useSelector(state => state.auth.user);
     const [dishes, setDishes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('token');
+    const retryGetApi = useRetryApi('get');
 
     useEffect(() => {
         const fetchDishesByCounter = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${MAIN_URL}/dish/counter/${counterId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setDishes(response.data);
+                const response = await retryGetApi(`/dish/counter/${counterId}`);
+                setDishes(response);
                 try {
-                    const counterResponse = await axios.get(`${MAIN_URL}/counter/${counterId}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    dispatch(setCounter(counterResponse.data));
+                    const counterResponse = await retryGetApi(`/counter/${counterId}`);
+                    dispatch(setCounter(counterResponse));
                 } catch (error) {
                     console.error("Error fetching counter:", error);
                     dispatch(setCounter(null));
