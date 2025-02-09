@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Navbar = () => {
     const cartCount = useSelector(state => state.cart.items.length);
+    const loading = useSelector((state) => state.cart.loading);
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
@@ -76,7 +77,12 @@ const Navbar = () => {
                                     <button className="relative">
                                         <LiaShoppingCartSolid className="text-3xl" />
                                         <div className="absolute -top-1 -right-2 bg-yellow-500 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                            {cartCount}
+                                            {loading ? (
+                                                <span className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent"></span>
+                                            ) : (
+                                                <span>{cartCount}</span>
+                                            )}
+
                                         </div>
                                     </button>
                                     <span className="hidden md:inline ml-2">Cart</span>
