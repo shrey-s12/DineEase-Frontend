@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import axios from "axios";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from '../hooks';
 
 const CreateDishPage = () => {
     const navigate = useNavigate();
@@ -15,7 +13,7 @@ const CreateDishPage = () => {
     const [inStock, setInStock] = useState(true);
 
     const counter = useSelector(state => state.counter.counter);
-    const token = localStorage.getItem('token');
+    const retryPostApi = useRetryApi('post');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,11 +27,7 @@ const CreateDishPage = () => {
         };
 
         try {
-            await axios.post(`${MAIN_URL}/dish`, dishData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            await retryPostApi("/dish", dishData);
             toast.success("Dish created successfully.");
             navigate(-1);
         } catch (error) {

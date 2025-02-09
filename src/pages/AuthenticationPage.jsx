@@ -1,11 +1,9 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../slices/authSlice";
+import {  useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
-const AUTH_URL = import.meta.env.VITE_AUTH_API_URL;
+import { useAuthLogin } from "../hooks";
+import { authCall } from "../utils";
 
 export const Auth = () => {
     const user = useSelector(state => state.auth.user);
@@ -22,30 +20,33 @@ const AuthPage = ({ type }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    // const dispatch = useDispatch();
+    const login = useAuthLogin();
+    const register = authCall.register;
     const navigate = useNavigate();
+    const location = useLocation();
+    const nextPage = location.state?.from || '/profile';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             if (type === "login") {
-                const res = await axios.post(`${AUTH_URL}/auth/login`, { email, password });
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("refresh_token", res.data.refresh_token);
-                dispatch(setUser(res.data.user));
+                await login(email, password);
                 toast.success("Login successful! 🎉");
-                navigate("/profile");
+                navigate(nextPage, { replace: true });
             } else {
-                await axios.post(`${AUTH_URL}/auth/register`, { name, email, password });
+                await register(name, email, password);
                 toast.success("Account created successfully! 🎉");
-                navigate("/auth/login");
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(error.response.data.message);
+            toast.error(error.response);
         }
     };
 
+    const loginButtonText = loading ? 'Loggin in...' : 'Login';
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white px-4">
             <div className="bg-gray-800 bg-opacity-90 p-8 rounded-2xl shadow-xl w-full max-w-md backdrop-blur-lg border border-gray-700">
@@ -73,7 +74,7 @@ const AuthPage = ({ type }) => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                            placeholder="example@mail.com"
+                            placeholder="example@gmail.com"
                             required
                         />
                     </div>

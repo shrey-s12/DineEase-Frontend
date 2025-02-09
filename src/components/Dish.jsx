@@ -1,17 +1,15 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementQuantity, incrementQuantity } from '../slices/cartSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from '../hooks';
 
 const Dish = ({ dish, updateDish }) => {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const quantity = useSelector(state => state.cart.items.find(item => item.dish._id === dish._id)?.quantity);
-    const token = localStorage.getItem('token');
 
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState(dish.name);
@@ -19,8 +17,8 @@ const Dish = ({ dish, updateDish }) => {
     const [category, setCategory] = useState(dish.category);
     const [price, setPrice] = useState(dish.price);
     const [inStock, setInStock] = useState(dish.inStock);
-
     const [loadingDish, setLoadingDish] = useState(false);
+    const retryPutApi = useRetryApi('put');
 
     const handleDecrement = async (dishId) => {
         setLoadingDish(true);
@@ -30,6 +28,7 @@ const Dish = ({ dish, updateDish }) => {
 
     const handleIncrement = async (dishId) => {
         setLoadingDish(true);
+        console.log("shreys12")
         await dispatch(incrementQuantity(dishId));
         setLoadingDish(false);
     };
@@ -43,19 +42,10 @@ const Dish = ({ dish, updateDish }) => {
 
     const handleEditDish = async (e, id) => {
         e.preventDefault();
+        const dishData = { name, description, category, price, inStock };
         try {
-            const response = await axios.put(`${MAIN_URL}/dish/${id}`, {
-                name,
-                description,
-                category,
-                price,
-                inStock,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            updateDish(response.data);
+            const response = await retryPutApi(`/dish/${id}`, dishData);
+            updateDish(response);
             toast.success("Dish updated successfully");
             setIsEditing(false);
         } catch (error) {

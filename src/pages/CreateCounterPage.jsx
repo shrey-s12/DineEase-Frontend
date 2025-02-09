@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from "../hooks";
 
 const CreateCounterPage = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [merchants, setMerchants] = useState([]);
     const [selectedMerchants, setSelectedMerchants] = useState([]);
+    const retryGetApi = useRetryApi('get');
+    const retryPostApi = useRetryApi('post');
 
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
     useEffect(() => {
         const fetchMerchants = async () => {
             try {
-                const response = await axios.get(`${MAIN_URL}/user/merchants`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setMerchants(response.data);
-                console.log(response);
+                const response = await retryGetApi("/user/merchants");
+                setMerchants(response);
             } catch (error) {
                 console.error("Error fetching merchants:", error);
             }
@@ -49,11 +43,7 @@ const CreateCounterPage = () => {
         };
 
         try {
-            await axios.post(`${MAIN_URL}/counter`, counterData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            await retryPostApi("/counter", counterData);
             toast.success("Counter created successfully.");
         } catch (error) {
             console.error("Error creating counter:", error);

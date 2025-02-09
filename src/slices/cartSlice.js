@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { retryApi } from '../utils';
 
 const initialState = {
     items: [],
@@ -84,41 +83,26 @@ export default cartSlice.reducer;
 
 
 export const addToCart = createAsyncThunk('cart/addToCart', async (dishId) => {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(`${MAIN_URL}/cart/${dishId}`, {}, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
+    const response = await retryApi('post', `/cart/${dishId}`, {})
+    return response;
 });
 
 export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (dishId) => {
-    const token = localStorage.getItem('token');
-    const response = await axios.delete(`${MAIN_URL}/cart/${dishId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
+    const response = await retryApi('delete', `/cart/${dishId}`);
+    return response;
 });
 
 export const incrementQuantity = createAsyncThunk('cart/incrementQuantity', async (dishId) => {
-    const token = localStorage.getItem('token');
-    const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: 1 }, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
+    const response = await retryApi('patch', `/cart/${dishId}`, { changeQuantity: 1 });
+    return response;
 });
 
 export const decrementQuantity = createAsyncThunk('cart/decrementQuantity', async (dishId) => {
-    const token = localStorage.getItem('token');
-    const response = await axios.patch(`${MAIN_URL}/cart/${dishId}`, { changeQuantity: -1 }, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
+    const response = await retryApi('patch', `/cart/${dishId}`, { changeQuantity: -1 });
+    return response;
 });
+
+// Note: useRetryApi is a custom React Hook because it uses useDispatch(),
+// which means it can only be used inside a React component or another hook.
+// However, createAsyncThunk is not a React component,
+// so using useRetryApi inside it will cause the Invalid Hook Call error.

@@ -1,19 +1,23 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAuthLogout } from '../hooks';
 
 const Navbar = () => {
-    const cartCount = useSelector(state => state.cart.items.length);
+    const cartCount = useSelector(state => state.cart.items?.length);
     const loading = useSelector((state) => state.cart.loading);
     const user = useSelector(state => state.auth.user);
-    const dispatch = useDispatch();
+    const logout = useAuthLogout();
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh_token');
-        dispatch(setUser(null));
-    }
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
     return (
         <>
             <nav className="flex justify-between items-center bg-gray-900 px-6 py-3 shadow-md sticky top-0 z-50">

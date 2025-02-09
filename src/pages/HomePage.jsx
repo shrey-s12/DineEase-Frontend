@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import banner from '../assets/Banner2.jpg';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { StaticCategories } from '../data';
 import Dish from '../components/Dish';
 import Counter from '../components/Counter';
 import { useSelector } from 'react-redux';
-const MAIN_URL = import.meta.env.VITE_MAIN_API_URL;
+import { useRetryApi } from '../hooks';
 
 const HeroSection = () => {
   return (
@@ -117,7 +116,7 @@ const HomePage = () => {
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.auth.user);
-  const token = localStorage.getItem('token');
+  const retryGetApi = useRetryApi('get');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,19 +125,15 @@ const HomePage = () => {
         let counterRes, dishRes;
 
         if (user && user?.role === "Merchant") {
-          counterRes = await axios.get(`${MAIN_URL}/counter/merchant/${user._id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          dishRes = await axios.get(`${MAIN_URL}/dish/merchant/${user._id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          counterRes = await retryGetApi(`/counter/merchant/${user._id}`);
+          dishRes = await retryGetApi(`/dish/merchant/${user._id}`);
         } else {
-          counterRes = await axios.get(`${MAIN_URL}/counter`);
-          dishRes = await axios.get(`${MAIN_URL}/dish`);
+          counterRes = await retryGetApi("/counter");
+          dishRes = await retryGetApi("/dish");
         }
 
-        setCounters(counterRes.data.slice(0, 4));
-        setDishes(dishRes.data.slice(0, 4));
+        setCounters(counterRes.slice(0, 4));
+        setDishes(dishRes.slice(0, 4));
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -148,7 +143,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [user, token]);
+  }, [user]);
 
 
   const updateDish = (updatedDish) => {
