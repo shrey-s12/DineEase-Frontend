@@ -29,3 +29,88 @@ Auth Backend (JWT + Role-Based Access Control)
 🔄 Token Refresh Mechanism for seamless logins.
 
 🔐 Secure Password Hashing with bcrypt.
+
+## 📸 Screenshots
+
+### Homepage
+![DineEase Homepage](/frontend-DineEase/src/assets/HomePage.png)
+
+🛠️ Installation
+
+1. Clone the Repository
+  git clone https://github.com/shrey-s12/DineEase-Frontend.git
+  git clone https://github.com/shrey-s12/DineEase-Backend.git
+  git clone https://github.com/shrey-s12/DineEase-auth-Backend.git
+
+2. Setup the Backend
+  cd DineEase-Backend
+  npm install
+  npm start
+Make sure MongoDB is running locally or update your MONGO_URI in .env.
+
+3. Setup the Auth Backend
+  cd DineEase-auth-Backend
+  npm install
+  npm start
+
+4. Setup the Frontend
+  cd DineEase-Frontend
+  npm install
+  npm run dev
+
+🌐 API Routes
+
+## 🌐 API Routes
+
+### **Backend API (`/`)**
+
+| Route    | Method | Description    |
+|----------|--------|---------------|
+| `/counter` | GET | Fetch counters |
+| `/dish` | GET | Fetch dishes |
+| `/user` | GET | Fetch users |
+| `/cart` | GET | Fetch cart |
+
+### **Auth API (`/auth`)**
+
+| Route      | Method | Description          |
+|------------|--------|----------------------|
+| `/login`   | POST   | User Login           |
+| `/register` | POST   | User Registration    |
+| `/token`   | POST   | Refresh Access Token |
+| `/logout`  | DELETE | User Logout          |
+
+
+🚀 Deployment
+
+Frontend (Vercel)
+
+Live Deployment
+npm run build
+vercel deploy
+
+Backend (Render)
+git push render main
+
+🎯 Future Enhancements
+
+📱 Mobile App using React Native.
+
+🍱 AI-Powered Meal Recommendations.
+
+💳 Integration with Payment Gateways.
+
+🎁 Loyalty & Rewards System.
+
+
+👨‍💻 Contributor
+
+Shrey Singhal - GitHub
+
+📝 License
+
+This project is licensed under the MIT License.
+
+⭐ Show Some Love
+
+If you like this project, don't forget to star the repo! ⭐
