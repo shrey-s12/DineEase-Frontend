@@ -1,46 +1,48 @@
-DineEase 🍽️
+# DineEase 🍽️  
+---
 
-DineEase is a MERN-based cafeteria management system designed to streamline food ordering, optimize kitchen operations, and enhance the dining experience. It features secure authentication and a seamless user interface for Admins, Merchants, and Customers.
+DineEase is a **MERN-based cafeteria management system** designed to **streamline food ordering**, **optimize kitchen operations**, and **enhance the dining experience**. It features **secure authentication** and a seamless **user interface** for **Admins, Merchants, and Customers**.  
 
-🚀 Features
+---
 
-Frontend (React + Vite + Tailwind CSS)
+## 🚀 Features  
+---
 
-🔥 Modern UI with an intuitive user experience.
+### **Frontend (React + Vite + Tailwind CSS)**  
+- ✅ **Modern UI** with an intuitive user experience.  
+- 🛒 **Cart Management** for adding and modifying orders.  
+- 🏷️ **Menu Display** with dynamic dish categories.  
+- ⚡ **State Management** using Redux.  
 
-🛒 Cart Management for adding and modifying orders.
+### **Backend (Node.js + Express + MongoDB)**  
+- 🍽️ **Dishes & Categories API** to manage menu items.  
+- ⏳ **Caching & Performance Optimization**.  
 
-🏷️ Menu Display with dynamic dish categories.
+### **Auth Backend (JWT + Role-Based Access Control)**  
+- 🔑 **JWT-based Authentication** with Refresh Tokens.  
+- 🛂 **Role-Based Access** for Admin, Merchant, and Customer.  
+- 🔄 **Token Refresh Mechanism** for seamless logins.  
+- 🔐 **Secure Password Hashing** with bcrypt.  
 
-⚡ State Management using Redux.
+---
 
-Backend (Node.js + Express + MongoDB)
+## 📸 Screenshots  
+---
 
-🍽️ Dishes & Categories API to manage menu items.
+### **Homepage**  
+![DineEase Homepage](/frontend-DineEase/src/assets/HomePage.png)  
 
-⏳ Caching & Performance Optimization.
+---
 
-Auth Backend (JWT + Role-Based Access Control)
+## 🛠️ Installation  
+---
 
-🔑 JWT-based Authentication with Refresh Tokens.
+### **1️⃣ Clone the Repository**  
+```sh
+git clone https://github.com/shrey-s12/DineEase-Frontend.git
+git clone https://github.com/shrey-s12/DineEase-Backend.git
+git clone https://github.com/shrey-s12/DineEase-auth-Backend.git
 
-🛂 Role-Based Access for Admin, Merchant, and Customer.
-
-🔄 Token Refresh Mechanism for seamless logins.
-
-🔐 Secure Password Hashing with bcrypt.
-
-## 📸 Screenshots
-
-### Homepage
-![DineEase Homepage](/frontend-DineEase/src/assets/HomePage.png)
-
-🛠️ Installation
-
-1. Clone the Repository
-  git clone https://github.com/shrey-s12/DineEase-Frontend.git
-  git clone https://github.com/shrey-s12/DineEase-Backend.git
-  git clone https://github.com/shrey-s12/DineEase-auth-Backend.git
 
 2. Setup the Backend
   cd DineEase-Backend
@@ -57,8 +59,6 @@ Make sure MongoDB is running locally or update your MONGO_URI in .env.
   cd DineEase-Frontend
   npm install
   npm run dev
-
-🌐 API Routes
 
 ## 🌐 API Routes
 
@@ -81,36 +81,40 @@ Make sure MongoDB is running locally or update your MONGO_URI in .env.
 | `/logout`  | DELETE | User Logout          |
 
 
-🚀 Deployment
+---
+## 🚀 Deployment  
 
-Frontend (Vercel)
-
-Live Deployment
-npm run build
-vercel deploy
+### Frontend (Vercel)  
+- **Live Deployment**  
+  ```sh
+  npm run build
+  vercel deploy
 
 Backend (Render)
 git push render main
 
-🎯 Future Enhancements
+---
+## 🎯 Future Enhancements
 
-📱 Mobile App using React Native.
+- 📱 Mobile App using React Native.
 
-🍱 AI-Powered Meal Recommendations.
+- 🍱 AI-Powered Meal Recommendations.
 
-💳 Integration with Payment Gateways.
+- 💳 Integration with Payment Gateways.
 
-🎁 Loyalty & Rewards System.
+- 🎁 Loyalty & Rewards System.
 
-
-👨‍💻 Contributor
+---
+### 👨‍💻 Contributor
 
 Shrey Singhal - GitHub
 
-📝 License
+---
+## 📝 License
 
 This project is licensed under the MIT License.
 
-⭐ Show Some Love
+--- 
+### ⭐ Show Some Love
 
 If you like this project, don't forget to star the repo! ⭐
