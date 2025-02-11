@@ -1,8 +1,31 @@
-# React + Vite
+DineEase 🍽️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DineEase is a MERN-based cafeteria management system designed to streamline food ordering, optimize kitchen operations, and enhance the dining experience. It features secure authentication and a seamless user interface for Admins, Merchants, and Customers.
 
-Currently, two official plugins are available:
+🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Frontend (React + Vite + Tailwind CSS)
+
+🔥 Modern UI with an intuitive user experience.
+
+🛒 Cart Management for adding and modifying orders.
+
+🏷️ Menu Display with dynamic dish categories.
+
+⚡ State Management using Redux.
+
+Backend (Node.js + Express + MongoDB)
+
+🍽️ Dishes & Categories API to manage menu items.
+
+⏳ Caching & Performance Optimization.
+
+Auth Backend (JWT + Role-Based Access Control)
+
+🔑 JWT-based Authentication with Refresh Tokens.
+
+🛂 Role-Based Access for Admin, Merchant, and Customer.
+
+🔄 Token Refresh Mechanism for seamless logins.
+
+🔐 Secure Password Hashing with bcrypt.
