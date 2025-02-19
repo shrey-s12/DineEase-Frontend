@@ -1,12 +1,10 @@
 # DineEase 🍽️  
----
 
 DineEase is a **MERN-based cafeteria management system** designed to **streamline food ordering**, **optimize kitchen operations**, and **enhance the dining experience**. It features **secure authentication** and a seamless **user interface** for **Admins, Merchants, and Customers**.  
 
 ---
 
-## 🚀 Features  
----
+# 🚀 Features  
 
 ### **Frontend (React + Vite + Tailwind CSS)**  
 - ✅ **Modern UI** with an intuitive user experience.  
@@ -26,16 +24,14 @@ DineEase is a **MERN-based cafeteria management system** designed to **streamlin
 
 ---
 
-## 📸 Screenshots  
----
+# 📸 Screenshots  
 
 ### **Homepage**  
 ![DineEase Homepage](/frontend-DineEase/src/assets/HomePage.png)  
 
 ---
 
-## 🛠️ Installation  
----
+# 🛠️ Installation  
 
 ### **1️⃣ Clone the Repository**  
 ```sh
@@ -43,24 +39,31 @@ git clone https://github.com/shrey-s12/DineEase-Frontend.git
 git clone https://github.com/shrey-s12/DineEase-Backend.git
 git clone https://github.com/shrey-s12/DineEase-auth-Backend.git
 
+```
 
-2. Setup the Backend
+### **2️⃣ Setup the Backend**
+```sh
   cd DineEase-Backend
   npm install
-  npm start
+  npm run dev
+```
 Make sure MongoDB is running locally or update your MONGO_URI in .env.
 
-3. Setup the Auth Backend
+### **3️⃣ Setup the Auth Backend**
+```sh
   cd DineEase-auth-Backend
   npm install
-  npm start
+  npm run auth
+```
 
-4. Setup the Frontend
+### **4️⃣ Setup the Frontend**
+```sh
   cd DineEase-Frontend
   npm install
   npm run dev
+```
 
-## 🌐 API Routes
+# 🌐 API Routes
 
 ### **Backend API (`/`)**
 
@@ -89,12 +92,13 @@ Make sure MongoDB is running locally or update your MONGO_URI in .env.
   ```sh
   npm run build
   vercel deploy
+  ``` 
 
-Backend (Render)
-git push render main
+### Backend (Render)
+- git push render main
 
 ---
-## 🎯 Future Enhancements
+# 🎯 Future Enhancements
 
 - 📱 Mobile App using React Native.
 
