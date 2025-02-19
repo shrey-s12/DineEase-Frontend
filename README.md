@@ -24,7 +24,7 @@ DineEase is a **MERN-based cafeteria management system** designed to **streamlin
 
 ---
 
-# 📸 Screenshots  
+# 📸 Screenshot
 
 ### **Homepage**  
 ![image](https://github.com/user-attachments/assets/232452d7-224c-4b8f-8215-ffa940702c5c)
